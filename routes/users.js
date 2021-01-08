@@ -16,4 +16,9 @@ router.post('/register', urlEncodeParser, async (req, res, next) => {
 
 });
 
+router.get('/forgetpassword', urlEncodeParser, async (req, res, next) => {
+    var renderOption = {title: "forget password"};
+    res.render('forgetPassword', renderOption);
+});
+
 module.exports = router;
