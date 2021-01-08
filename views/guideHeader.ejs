@@ -7,7 +7,7 @@
                     data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
                         class="icon-bar"></span><span class="icon-bar"></span></button>
-            <a class="navbar-brand" href="#">猫猫的猫窝</a>
+            <a class="navbar-brand" href="/">猫猫的猫窝</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -16,44 +16,118 @@
                     <a href="#">博客首页</a>
                 </li>
                 <li>
-                    <a href="#">Link</a>
+                    <a class="" href="#">猫猫写了啥呢?</a>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" role="search">
+            <form class="navbar-form navbar-left" role="search" method="get" action="/search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Tag/文章标题关键词..."/>
+                    <label for="search-text"></label>
+                    <input id="search-text" type="text" class="form-control" placeholder="Tag/文章标题关键词..."/>
                 </div>
                 <button type="submit" class="btn btn-primary">猫猫搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#">login</a>
+                    <a id="modal-288059" href="#modal-container-288059" data-toggle="modal">login</a>
                 </li>
                 <li>
                     <a class="navbar-brand" href="/about">about</a>
                 </li>
-                <% /* <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#">Action</a>
-                    </li>
-                    <li>
-                        <a href="#">Another action</a>
-                    </li>
-                    <li>
-                        <a href="#">Something else here</a>
-                    </li>
-                    <li class="divider">
-                    </li>
-                    <li>
-                        <a href="#">Separated link</a>
-                    </li>
-                </ul>
-            </li> */ %>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong
+                                class="caret"></strong></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#">Action</a>
+                        </li>
+                        <li>
+                            <a href="#">Another action</a>
+                        </li>
+                        <li>
+                            <a href="#">Something else here</a>
+                        </li>
+                        <li class="divider">
+                        </li>
+                        <li>
+                            <a href="#">Separated link</a>
+                        </li>
+                    </ul>
+                </li>
 
             </ul>
         </div>
-
     </nav>
+    <div class="modal fade" id="modal-container-288059" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        猫猫需要你登录或者注册
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="tabbable" id="tabs-781000">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-835874" data-toggle="tab">猫猫登录</a>
+                            </li>
+                            <li>
+                                <a href="#panel-121604" data-toggle="tab">注册成为猫窝的猫猫吧!</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-835874">
+                                <br>
+                                <form class="form">
+                                    <div class="form-group">
+                                        <label for="username" id="label-username">username</label>
+                                        <input id="username" type="text" class="form-control" placeholder="告诉猫猫你的名字!">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" id="label-password">password</label>
+                                        <input type="password" class="form-control" placeholder="密码呢?" id="password">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <a href="" type="button" class="btn btn-info">你居然忘记了!</a>
+                                        <button type="button" class="btn btn-primary">猫猫登录</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="panel-121604">
+                                <br>
+                                <form class="form">
+                                    <div class="form-group">
+                                        <label for="username" id="label-username">username</label>
+                                        <input id="username" type="text" class="form-control" placeholder="告诉猫猫你的名字!">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" id="label-password">password</label>
+                                        <input type="password" class="form-control" placeholder="密码呢?" id="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" id="label-password">repeat password</label>
+                                        <input type="password" class="form-control" placeholder="再输一遍啦~" id="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" id="label-password">苏猫猫给你发的邀请码</label>
+                                        <input type="password" class="form-control" placeholder="每天限量的邀请码~"
+                                               id="password">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <a href="mailto:sumover@foxmail.com" type="button" class="btn btn-info">去给猫猫写一封邀请码的邮件~</a>
+                                        <button type="button" class="btn btn-primary">猫猫注册</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
