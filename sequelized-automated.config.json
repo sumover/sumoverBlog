@@ -1,0 +1,15 @@
+{
+  "dbOptions": {
+    "database": "db_sumoverblog",
+    "username": "root",
+    "password": "2323180",
+    "dialect": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "logging": false
+  },
+  "options": {
+    "type": "js",
+    "dir": "models"
+  }
+}

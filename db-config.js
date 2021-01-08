@@ -3,7 +3,8 @@ var dbConfig = {
     username: "root",
     password: "2323180",
     host: "localhost",
-    port: 3306
+    port: 3306,
+    dialect: "mysql"
 }
 
 module.exports = dbConfig;

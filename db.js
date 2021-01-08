@@ -8,7 +8,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
         acquire: 30000,
         idle: 10000
     },
-    dialect: "mysql",
+    dialect: config.dialect,
     define: {
         timestamps: false
     }
