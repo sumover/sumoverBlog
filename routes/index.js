@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {title: '猫窝首页'});
+    res.render('index', {title: '猫窝大门'});
 });
 
 router.get('/about', async (req, res, next) => {
