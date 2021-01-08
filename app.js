@@ -19,9 +19,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//  初始化URL mapping
 require('./router-autodetect')(app);
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

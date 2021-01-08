@@ -6,7 +6,6 @@ module.exports = {
     routerPath: path.join(__dirname, "routes"),
     urlMapping: [
         {url: "/", router: "index"},
-        {url: "/users", router: "users"},
-        {url: "/neko", router: "neko"},
+        {url: "/users", router: "users"}
     ]
 };
