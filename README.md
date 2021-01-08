@@ -2,4 +2,4 @@
 
 基于node.
 
-![好耶!](./public/猫猫博客ico.svg)
+![好耶!](./public/猫猫博客ico.png)
