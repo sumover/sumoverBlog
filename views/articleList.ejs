@@ -1,0 +1,60 @@
+<%- include header.ejs %>
+<% var baseurl = "http://localhost:3000/" %>
+<html>
+<body>
+<%- include guideHeader.ejs %>
+
+<div class="container" role="main">
+    <div class="row clearfix">
+        <div>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td class="col-md-6">
+                        <h1><a href="#">好耶!</a></h1>
+                    </td>
+                    <td>
+                        <img src="<%= baseurl %>/images/serena.jpg" alt="好耶" height="100" width="100">
+                    </td>
+                </tr><tr>
+                    <td class="col-md-6">
+                        <h1><a href="#">好耶!</a></h1>
+                    </td>
+                    <td>
+                        <img src="<%= baseurl %>/images/serena.jpg" alt="好耶" height="100" width="100">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <ul class="pagination">
+            <li>
+                <a href="#">Prev</a>
+            </li>
+            <li>
+                <a href="#">1</a>
+            </li>
+            <li>
+                <a href="#">2</a>
+            </li>
+            <li>
+                <a href="#">3</a>
+            </li>
+            <li>
+                <a href="#">4</a>
+            </li>
+            <li>
+                <a href="#">5</a>
+            </li>
+            <li>
+                <a href="#">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<%- include pagefoot.ejs %>
+</body>
+</html>

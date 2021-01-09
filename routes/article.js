@@ -7,6 +7,18 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const urlEncodeParser = bodyParser.urlencoded({extend: false});
 
+
+/**
+ * 文章列表
+ */
+router.get('/', async (req, res, next) => {
+    var option = {
+        title: "猫猫的博客~",
+        isArticleList: true
+    };
+    res.render('articleList', option);
+})
+
 /**
  * 文章内容的GET方法
  * 返回一个html
