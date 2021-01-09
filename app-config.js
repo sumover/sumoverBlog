@@ -7,6 +7,8 @@ module.exports = {
     urlMapping: [
         {url: "/", router: "index"},
         {url: "/users", router: "users"},
-        {url: "/search", router: "search"}
-    ]
+        {url: "/search", router: "search"},
+        {url: "/article", router: "article"}
+    ],
+    baseURL: "http://localhost:3000"
 };
