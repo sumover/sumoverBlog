@@ -43,7 +43,24 @@ router.get('/logout', async (req, res, next) => {
 });
 
 router.post('/register', urlEncodeParser, async (req, res, next) => {
-
+    var username = req.body.username;
+    var password = req.body.password;
+    var inviteCode = req.body.inviteCode;
+    if (await userService.userExist(username)) {
+        console.log(`user ${username} already exist!`);
+        res.json('user already exist');
+        return
+    }
+    console.log(`user ${username} not exist!`);
+    if (!(await userService.inviteCodeCheck(inviteCode))) {
+        console.log(`invite code ${inviteCode} incorrect!`);
+        res.json('invite code error');
+        return
+    }
+    console.log(`invite code ${inviteCode} correct!`);
+    var userAdded = await userService.userAdd(username, password, inviteCode);
+    console.log(`user ${JSON.stringify(userAdded)} create!`);
+    res.json('register success').end();
 });
 
 router.get('/forgetpassword', urlEncodeParser, async (req, res, next) => {
