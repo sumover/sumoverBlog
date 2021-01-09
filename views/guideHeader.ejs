@@ -36,7 +36,7 @@
                     </template>
                     <template v-else>
                         <li>
-                            <a href="#">{{ loginUsername }}</a>
+                            <a href="#">{{ loginUser.username }}</a>
                         </li>
                     </template>
                     <li class="<%= typeof (isAbout) !== "undefined" ? "active" : "" %>">
@@ -139,11 +139,13 @@
                                                    placeholder="每天限量的邀请码~" v-model="inviteCode">
                                         </div>
                                         <div class="modal-footer">
+                                            <span class="text text-danger text-left col-lg-12">{{ registerMessage }}</span>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                                             </button>
                                             <a href="mailto:sumover@foxmail.com" type="button" class="btn btn-info"
                                                @click="userRegister">去给猫猫写一封邀请码的邮件~</a>
-                                            <button type="button" class="btn btn-primary">猫猫注册</button>
+                                            <button type="button" class="btn btn-primary" @click="userRegister">猫猫注册
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -167,7 +169,9 @@
                         <div class="modal-body">
                             <div class="jumbotron">
                                 <ul>
-
+                                    <li v-for="inviteCode in fetchesInviteCodes">
+                                        {{inviteCode.code}}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -176,17 +180,6 @@
                         </div>
                     </div>
                 </div>
-                <script>
-                    var vm_inviteCodeGeneratorModal = new Vue({
-                        el: "#modal-container-invite-code",
-                        data: {
-                            inviteCode: []
-                        },
-                        async mounted() {
-                            axios.get("/"
-                        }
-                    });
-                </script>
             </div>
         </template>
     </div>
@@ -197,6 +190,7 @@
         el: "#guide-header-div",
         data: {
             loginStatus: false,
+            loginUser: null,
             loginUsername: null,
             loginPassword: null,
             loginMessage: null,
@@ -204,13 +198,16 @@
             registerPassword: null,
             registerPasswordRepeat: null,
             inviteCode: null,
-            registerMessage: null
+            registerMessage: null,
+            fetchesInviteCodes: null
         },
         async mounted() {
             var res = await axios.get('http://localhost:3000/users/loginStatus');
             if (res.data.message === "user login") {
                 this.loginStatus = true;
-                this.loginUsername = res.data.username;
+                this.loginUser = res.data.loginUser;
+                var fetchInviteCodesRes = await axios.get(`/users/inviteCode/${this.loginUser.id}`);
+                this.fetchesInviteCodes = fetchInviteCodesRes.data.inviteCodes;
             } else {
                 this.loginStatus = false;
             }
@@ -274,13 +271,18 @@
                     password: md5Password,
                     inviteCode: vm_guideHeader.inviteCode
                 });
-                if (registerRes.data.message === "user already exist") ;
-                if (registerRes.data.message === "invite code error") ;
+                if (registerRes.data.message === "user already exist") {
+                    vm_guideHeader.registerMessage = "这个用户名已经用了呢...";
+                    return
+                }
+                if (registerRes.data.message === "invite code error") {
+                    vm_guideHeader.registerMessage = "邀请码错误!";
+                    return
+                }
                 if (registerRes.data.message === "register success") {
                     location.reload();
                 }
             }
         }
-
     });
 </script>

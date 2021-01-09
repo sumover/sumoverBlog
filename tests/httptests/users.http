@@ -68,3 +68,7 @@ Content-Type: application/json
   "password": "4QrcOUm6Wau+VuBX8g+IPg",
   "inviteCode": "1"
 }
+
+###
+GET http://{{baseURL}}/users/inviteCode/1
+Content-Type: application/json
