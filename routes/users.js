@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/loginStatus', urlEncodeParser, (req, res, next) => {
     if (req.session.loginUser) {
-        res.json({message: "user login", username: req.session.loginUser.username});
+        res.json({message: "user login", loginUser: req.session.loginUser});
     } else res.json({message: "user not login"});
 });
 
@@ -30,6 +30,7 @@ router.post('/login', urlEncodeParser, async (req, res, next) => {
             }).end();
         } else {
             req.session.loginUser = checkRes;
+
             res.json({
                 message: "login success"
             }).end();
@@ -48,19 +49,19 @@ router.post('/register', urlEncodeParser, async (req, res, next) => {
     var inviteCode = req.body.inviteCode;
     if (await userService.userExist(username)) {
         console.log(`user ${username} already exist!`);
-        res.json('user already exist');
+        res.json({message: 'user already exist'});
         return
     }
     console.log(`user ${username} not exist!`);
     if (!(await userService.inviteCodeCheck(inviteCode))) {
         console.log(`invite code ${inviteCode} incorrect!`);
-        res.json('invite code error');
+        res.json({message: 'invite code error'});
         return
     }
     console.log(`invite code ${inviteCode} correct!`);
     var userAdded = await userService.userAdd(username, password, inviteCode);
     console.log(`user ${JSON.stringify(userAdded)} create!`);
-    res.json('register success').end();
+    res.json({message: 'register success'}).end();
 });
 
 router.get('/forgetpassword', urlEncodeParser, async (req, res, next) => {
@@ -74,7 +75,11 @@ router.get('/inviteCode/:id', async (req, res, next) => {
         return
     }
     var userId = req.params.id;
-    await userService.fetchInviteCode(userId);
+    var inviteCodes = await userService.fetchInviteCode(userId);
+    res.json({
+        inviteCodes: inviteCodes,
+        message: "fetch invite code success"
+    });
 });
 
 module.exports = router;

@@ -8,9 +8,10 @@ const crypto = require('crypto');
 const appConfig = require('../app-config');
 
 function md5WithSalt(str1, str2) {
-    var sum = crypto.createHash('md5');
-    sum.update(str1);
-    return sum.digest(str2);
+    var hash = crypto.createHash('md5');
+    hash.update(str1 + str2);
+    var hashRes = hash.digest('hex');
+    return hashRes;
 }
 
 module.exports = {
@@ -60,17 +61,23 @@ module.exports = {
         });
         if (inviteCodeList.length !== 0) return inviteCodeList;
         inviteCodeList = [];
-        var user = await UserModel.findAll({
+        var userRes = await UserModel.findAll({
             where: {
                 id: userId
             }
         });
+        var user = userRes[0];
+        var firstMD5 = md5WithSalt(today, user.username);
         for (var i = 0; i < appConfig.inviteCodeNumber; ++i) {
-            var inviteCodeGenerate = InviteCodeModel.create({
-                code: md5WithSalt(md5WithSalt(today, user.username), (Math.random() * 10000).toString()),
+            inviteCodeList.push({
+                code: md5WithSalt(firstMD5, (Math.random() * Date.now()).toString()),
                 inviteBy: userId,
                 createDate: today
             });
         }
+        for (var _inviteCode of inviteCodeList) {
+            var createRes = await InviteCodeModel.create(_inviteCode);
+        }
+        return inviteCodeList;
     }
 }
