@@ -1,0 +1,37 @@
+
+### users/ url 测试
+GET http://{{baseURL}}/users
+Accept: text/plain
+
+###
+GET http://{{baseURL}}/users/loginStatus
+Accept: application/json
+
+###
+### 登录测试
+POST http://{{baseURL}}/users/login
+Content-Type: application/json
+
+{
+  "username": "sumover",
+  "password": "2323180"
+}
+
+### 登录测试: 用户名不存在
+POST http://{{baseURL}}/users/login
+Content-Type: application/json
+
+{
+  "username": "usernamenotexist",
+  "password": "2323180"
+}
+
+### 登录测试: 密码错误
+
+POST http://{{baseURL}}/users/login
+Content-Type: application/json
+
+{
+  "username": "sumover",
+  "password": "123456"
+}
