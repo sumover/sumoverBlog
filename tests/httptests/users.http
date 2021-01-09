@@ -3,18 +3,18 @@
 GET http://{{baseURL}}/users
 Accept: text/plain
 
-###
+### 登录状态API测试
 GET http://{{baseURL}}/users/loginStatus
 Accept: application/json
 
-###
+
 ### 登录测试
 POST http://{{baseURL}}/users/login
 Content-Type: application/json
 
 {
   "username": "sumover",
-  "password": "2323180"
+  "password": "aJdJB7Od4UEkO14J0VP8Zg"
 }
 
 ### 登录测试: 用户名不存在
@@ -34,4 +34,37 @@ Content-Type: application/json
 {
   "username": "sumover",
   "password": "123456"
+}
+
+### 注册测试: 用户已存在
+
+POST http://{{baseURL}}/users/register
+Content-Type: application/json
+
+{
+  "username": "sumover",
+  "password": "123123",
+  "inviteCode": "1"
+}
+
+### 注册测试: 邀请码错误
+
+POST http://{{baseURL}}/users/register
+Content-Type: application/json
+
+{
+  "username": "regtestuser1",
+  "password": "123123",
+  "inviteCode": "2"
+}
+
+### 注册测试: 注册成功
+
+POST http://{{baseURL}}/users/register
+Content-Type: application/json
+
+{
+  "username": "regtestuser1",
+  "password": "4QrcOUm6Wau+VuBX8g+IPg",
+  "inviteCode": "1"
 }
