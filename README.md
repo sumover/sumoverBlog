@@ -18,3 +18,6 @@ TODO list:
 
 1. 登录, 注册功能完成.
 2. article, articleDetail UI设计初步完成.
+3. 邀请码机制设计完成.
+4. 修复了登录, 注册的bug
+5. 修复了加密算法的bug
