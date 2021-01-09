@@ -48,12 +48,12 @@
                         <ul class="dropdown-menu">
                             <template v-if="loginStatus">
                                 <li>
-                                    <a href="#">生成邀请码</a>
+                                    <a href="#modal-container-invite-code" data-toggle="modal">生成邀请码</a>
                                 </li>
                             </template>
                             <template v-else>
                                 <li>
-                                    <a href="#">加入猫窝</a>
+                                    <a>加入猫窝</a>
                                 </li>
                             </template>
                             <li class="divider">
@@ -151,10 +151,44 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
+        <template v-if="loginStatus">
+            <div class="modal fade" id="modal-container-invite-code" role="dialog"
+                 aria-labelledby="invite-code-modal-label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                生成邀请码
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="jumbotron">
+                                <ul>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">生成邀请码</button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    var vm_inviteCodeGeneratorModal = new Vue({
+                        el: "#modal-container-invite-code",
+                        data: {
+                            inviteCode: []
+                        },
+                        async mounted() {
+                            axios.get("/"
+                        }
+                    });
+                </script>
+            </div>
+        </template>
     </div>
 
 </div>

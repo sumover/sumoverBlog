@@ -68,4 +68,13 @@ router.get('/forgetpassword', urlEncodeParser, async (req, res, next) => {
     res.render('forgetPassword', renderOption);
 });
 
+router.get('/inviteCode/:id', async (req, res, next) => {
+    if (typeof (req.session.loginUser) === "undefined") {
+        res.json({message: "please login first"}).end();
+        return
+    }
+    var userId = req.params.id;
+    await userService.fetchInviteCode(userId);
+});
+
 module.exports = router;

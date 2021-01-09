@@ -13,3 +13,8 @@ TODO list:
 1. 设计articleList页面
 2. 设计邀请码模块
 3. 设计标签模块
+
+## 2021/1/9 开发日志
+
+1. 登录, 注册功能完成.
+2. article, articleDetail UI设计初步完成.

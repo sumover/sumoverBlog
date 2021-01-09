@@ -4,6 +4,7 @@ module.exports = {
     viewPath: path.join(__dirname, "views/"),
     staticPath: path.join(__dirname, "public"),
     routerPath: path.join(__dirname, "routes"),
+    inviteCodeNumber: 5,
     urlMapping: [
         {url: "/", router: "index"},
         {url: "/users", router: "users"},
