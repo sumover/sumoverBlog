@@ -1,5 +1,5 @@
 var dbConfig = {
-    database: "db_nekoneko",
+    database: "db_sumoverblog",
     username: "root",
     password: "2323180",
     host: "localhost",
