@@ -1,0 +1,9 @@
+### article detail
+GET http://{{baseURL}}/article/1/detail
+
+
+
+### article list
+GET http://{{baseURL}}/article/articleList?page=1
+Accept: application/json
+
