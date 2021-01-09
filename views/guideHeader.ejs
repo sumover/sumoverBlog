@@ -1,6 +1,6 @@
 <% /* 导航栏*/ %>
 
-<div class="row clearfix">
+<div class="row clearfix" id="guide-header-div">
     <div class="col-md-12">
         <nav class="navbar navbar-default  navbar-static-top bs-home-nav" role="navigation" id="guide-navbar">
             <div class="navbar-header">
@@ -29,30 +29,29 @@
                     <button type="submit" class="btn btn-primary">猫猫搜索</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a id="modal-288059" href="#modal-container-288059" data-toggle="modal">login</a>
-                    </li>
+                    <template v-if="!loginStatus">
+                        <li>
+                            <a id="modal-288059" href="#modal-container-288059" data-toggle="modal">login</a>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <li>
+                            <a href="#">{{ loginUsername }}</a>
+                        </li>
+                    </template>
                     <li>
                         <a class="navbar-brand" href="/about">about</a>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ovo<strong
                                     class="caret"></strong></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">Action</a>
-                            </li>
-                            <li>
-                                <a href="#">Another action</a>
-                            </li>
-                            <li>
-                                <a href="#">Something else here</a>
+                                <template v-if="loginStatus">
+                                    <a href="/users/logout">退出猫窝</a>
+                                </template>
                             </li>
                             <li class="divider">
-                            </li>
-                            <li>
-                                <a href="#">Separated link</a>
-                            </li>
                         </ul>
                     </li>
 
@@ -73,64 +72,67 @@
                         <div class="tabbable" id="tabs-781000">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#panel-835874" data-toggle="tab">猫猫登录</a>
+                                    <a href="#pane-login" data-toggle="tab">猫猫登录</a>
                                 </li>
                                 <li>
-                                    <a href="#panel-121604" data-toggle="tab">注册成为猫窝的猫猫吧!</a>
+                                    <a href="#pane-register" data-toggle="tab">注册成为猫窝的猫猫吧!</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="panel-835874">
+                                <div class="tab-pane active" id="pane-login">
                                     <br>
                                     <form class="form">
                                         <div class="form-group">
                                             <label for="login-username" id="label-username">username</label>
                                             <input id="login-username" type="text" class="form-control"
-                                                   placeholder="告诉猫猫你的名字!">
+                                                   placeholder="告诉猫猫你的名字!" v-model="loginUsername">
                                         </div>
                                         <div class="form-group">
                                             <label for="login-password" id="label-password">password</label>
-                                            <input type="login-password" class="form-control" placeholder="密码呢?"
-                                                   id="password">
+                                            <input id="login-password" type="password" class="form-control"
+                                                   placeholder="密码呢?" v-model="loginPassword">
                                         </div>
                                         <div class="modal-footer">
+                                            <span class="text text-danger text-left col-lg-12">{{ loginMessage }}</span>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                                             </button>
                                             <a href="/users/forgetpassword" type="button"
                                                class="btn btn-info">你居然忘记了!</a>
-                                            <button type="button" class="btn btn-primary">猫猫登录</button>
+                                            <button type="button" class="btn btn-primary" @click="userLogin">猫猫登录
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane" id="panel-121604">
+                                <div class="tab-pane" id="pane-register">
                                     <br>
                                     <form class="form">
                                         <div class="form-group">
                                             <label for="register-username" id="label-username">username</label>
                                             <input id="register-username" type="text" class="form-control"
-                                                   placeholder="告诉猫猫你的名字!">
+                                                   placeholder="告诉猫猫你的名字!" v-model="registerUsername">
                                         </div>
                                         <div class="form-group">
                                             <label for="register-password" id="label-password">password</label>
                                             <input id="register-password" type="password" class="form-control"
-                                                   placeholder="密码呢?">
+                                                   placeholder="密码呢?" v-model="registerPassword">
                                         </div>
                                         <div class="form-group">
                                             <label for="register-repeat-password" id="label-password">repeat
                                                 password</label>
                                             <input id="register-repeat-password" type="password"
                                                    class="form-control"
-                                                   placeholder="再输一遍啦~">
+                                                   placeholder="再输一遍啦~" v-model="registerPasswordRepeat">
                                         </div>
                                         <div class="form-group">
                                             <label for="invite-code" id="label-password">苏猫猫给你发的邀请码</label>
                                             <input id="invite-code" type="password" class="form-control"
-                                                   placeholder="每天限量的邀请码~">
+                                                   placeholder="每天限量的邀请码~" v-model="inviteCode">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                                             </button>
-                                            <a href="mailto:sumover@foxmail.com" type="button" class="btn btn-info">去给猫猫写一封邀请码的邮件~</a>
+                                            <a href="mailto:sumover@foxmail.com" type="button" class="btn btn-info"
+                                               @click="userRegister">去给猫猫写一封邀请码的邮件~</a>
                                             <button type="button" class="btn btn-primary">猫猫注册</button>
                                         </div>
                                     </form>
@@ -144,4 +146,66 @@
 
         </div>
     </div>
+
 </div>
+<script>
+    var vm_guideHeader = new Vue({
+        el: "#guide-header-div",
+        data: {
+            loginStatus: false,
+            loginUsername: null,
+            loginPassword: null,
+            loginMessage: null,
+            registerUsername: null,
+            registerPassword: null,
+            registerPasswordRepeat: null,
+            inviteCode: null,
+            registerMessage: null
+        },
+        async mounted() {
+            var res = await axios.get('http://localhost:3000/users/loginStatus');
+            if (res.data.message === "user login") {
+                this.loginStatus = true;
+                this.loginUsername = res.data.username;
+            } else {
+                this.loginStatus = false;
+            }
+        },
+        methods: {
+            userStatus: async () => {
+                return vm_guideHeader.loginStatus;
+            },
+            userLogin: async () => {
+                if (vm_guideHeader.loginUsername === null
+                    || vm_guideHeader.loginUsername.length === 0) {
+                    vm_guideHeader.loginMessage = "用户名不能为空!";
+                    return
+                }
+                if (vm_guideHeader.loginPassword === null
+                    || vm_guideHeader.loginPassword === 0) {
+                    vm_guideHeader.loginMessage = "密码不能为空!";
+                    return
+                }
+                var loginRes = await axios.post('http://localhost:3000/users/login', {
+                    username: vm_guideHeader.loginUsername,
+                    password: vm_guideHeader.loginPassword
+                });
+                if (loginRes.data.message === "user not exist") {
+                    vm_guideHeader.loginMessage = "这个猫猫不存在哦!";
+                    return
+                }
+                if (loginRes.data.message === "password error") {
+                    vm_guideHeader.loginMessage = "密码输错了哦";
+                    return
+                }
+                if (loginRes.data.message === "login success") {
+                    location.reload();
+                }
+            },
+            userRegister: async () => {
+
+            }
+        }
+
+    });
+</script>
