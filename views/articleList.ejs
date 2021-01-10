@@ -4,21 +4,16 @@
 <body>
 <%- include guideHeader.ejs %>
 
-<div class="container" role="main">
+<div class="container" role="main" id="article-list-main">
     <div class="row clearfix">
+        <h1>猫猫都写了啥呢?</h1>
         <div>
             <table class="table table-striped">
                 <tbody>
-                <tr>
+                <tr v-for="article in curLoadArticleList">
                     <td class="col-md-6">
-                        <h1><a href="#">好耶!</a></h1>
-                    </td>
-                    <td>
-                        <img src="<%= baseurl %>/images/serena.jpg" alt="好耶" height="100" width="100">
-                    </td>
-                </tr><tr>
-                    <td class="col-md-6">
-                        <h1><a href="#">好耶!</a></h1>
+                        <h2><a v-bind:href="'/article/'+article.id+'/detail/'">
+                                {{ article.title }}</a></h2>
                     </td>
                     <td>
                         <img src="<%= baseurl %>/images/serena.jpg" alt="好耶" height="100" width="100">
@@ -33,20 +28,8 @@
             <li>
                 <a href="#">Prev</a>
             </li>
-            <li>
-                <a href="#">1</a>
-            </li>
-            <li>
-                <a href="#">2</a>
-            </li>
-            <li>
-                <a href="#">3</a>
-            </li>
-            <li>
-                <a href="#">4</a>
-            </li>
-            <li>
-                <a href="#">5</a>
+            <li v-bind:class="{'active':(curActiveIndex === pageIndex)}" v-for="pageIndex in pageCount">
+                <a href="#">{{pageIndex}}</a>
             </li>
             <li>
                 <a href="#">Next</a>
@@ -54,6 +37,25 @@
         </ul>
     </div>
 </div>
+
+<script>
+    var vm_article_list_main = new Vue({
+        el: "#article-list-main",
+        data: {
+            pageCount: null,
+            curActiveIndex: 1,
+            curLoadArticleList: null
+        },
+        async mounted() {
+            var pageCountRes = await axios.get('/article/pageCount');
+            this.pageCount = pageCountRes.data;
+            var articleListRes = await axios.get('/article/articleList', {params: {page: 1}});
+            this.curLoadArticleList = articleListRes.data.articleList;
+            this.curActiveIndex = 1;
+        },
+        methods: {}
+    })
+</script>
 
 <%- include pagefoot.ejs %>
 </body>
