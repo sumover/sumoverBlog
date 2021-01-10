@@ -30,7 +30,7 @@ router.post('/login', urlEncodeParser, async (req, res, next) => {
             }).end();
         } else {
             req.session.loginUser = checkRes;
-
+            await userService.updateLastLogin(checkRes, Date.now());
             res.json({
                 message: "login success"
             }).end();
@@ -67,6 +67,14 @@ router.post('/register', urlEncodeParser, async (req, res, next) => {
 router.get('/forgetpassword', urlEncodeParser, async (req, res, next) => {
     var renderOption = {title: "forget password"};
     res.render('forgetPassword', renderOption);
+});
+
+router.post('/forgetpassword', urlEncodeParser, async (req, res, next) => {
+    var username = req.body.username;
+    var password = req.body.password;
+    var inviteCode = req.body.inviteCode;
+
+    res.json({message: "reset error"});
 });
 
 router.get('/inviteCode/:id', async (req, res, next) => {

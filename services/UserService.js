@@ -79,5 +79,10 @@ module.exports = {
             var createRes = await InviteCodeModel.create(_inviteCode);
         }
         return inviteCodeList;
+    },
+    updateLastLogin: async (loginUser, lastLoginTime) => {
+        loginUser.last_login_time = lastLoginTime;
+        await loginUser.save();
+        return loginUser;
     }
 }
