@@ -21,7 +21,8 @@
     "body-parser": "^1.19.0",
     "express-session": "^1.17.1",
     "vue": "^2.6.12",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "marked": "1.2.7"
   },
   "devDependencies": {
     "mocha": "^8.2.1"

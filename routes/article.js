@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require("body-parser");
 const urlEncodeParser = bodyParser.urlencoded({extend: false});
-
+const articleService = require('../services/ArticleService');
 
 /**
  * 文章列表
@@ -26,7 +26,8 @@ router.get('/', async (req, res, next) => {
 router.get('/:id/detail', urlEncodeParser, async (req, res, next) => {
     var articleId = req.params.id;
     console.log(`browser query article ${articleId} detail`);
-    var resOption = {title: "article title"};
+    var articleDetail = await articleService.fetchArticle(articleId);
+    var resOption = {title: "article title", articleHTML: articleDetail};
     res.render('articleDetail', resOption);
 });
 
