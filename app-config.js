@@ -11,5 +11,6 @@ module.exports = {
         {url: "/search", router: "search"},
         {url: "/article", router: "article"}
     ],
-    baseURL: "http://localhost:3000"
+    baseURL: "http://localhost:3000",
+    pageLength: 10
 };
