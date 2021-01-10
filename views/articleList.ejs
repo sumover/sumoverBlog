@@ -3,20 +3,21 @@
 <html>
 <body>
 <%- include guideHeader.ejs %>
-
+<script src="<%= baseurl %>/javascripts/moment.js"></script>
 <div class="container" role="main" id="article-list-main">
     <div class="row clearfix">
         <h1>猫猫都写了啥呢?</h1>
+        <img src="<%= baseurl %>/images/猫猫观察.jpg" alt="猫猫观察">
         <div>
             <table class="table table-striped">
                 <tbody>
                 <tr v-for="article in curLoadArticleList">
                     <td class="col-md-6">
-                        <h2><a v-bind:href="'/article/'+article.id+'/detail/'">
-                                {{ article.title }}</a></h2>
+                        <a v-bind:href="'/article/'+article.id+'/detail/'" class="h2 text-info text-center">
+                            {{ article.title }}</a>
                     </td>
-                    <td>
-                        <img src="<%= baseurl %>/images/serena.jpg" alt="好耶" height="100" width="100">
+                    <td class="col-md-4">
+                        <h4 class="text-info text-center">{{article.createTime }}</h4>
                     </td>
                 </tr>
                 </tbody>

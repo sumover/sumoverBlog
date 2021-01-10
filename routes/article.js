@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const urlEncodeParser = bodyParser.urlencoded({extend: false});
 const articleService = require('../services/ArticleService');
 const AppConfig = require("../app-config");
+const moment = require('moment');
 
 /**
  * 文章列表
@@ -40,8 +41,9 @@ router.get('/articleList', urlEncodeParser, async (req, res, next) => {
     var page = req.query.page;
     console.log(`browser query article list page=${page}`);
     var articleList = await articleService.queryArticleLists(page, AppConfig.pageLength);
-    for (var article of articleList) {
-        article.articleDetail = "预览页面暂时不予显示";
+    for (var index in articleList) {
+        articleList[index].articleDetail = "预览页面暂时不予显示";
+        articleList[index].createTime = moment(Number(articleList[index].createTime)).format("YYYY-MM-DD");
     }
     res.json({
         message: "query success",
