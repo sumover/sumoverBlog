@@ -7,3 +7,5 @@ GET http://{{baseURL}}/article/1/detail
 GET http://{{baseURL}}/article/articleList?page=1
 Accept: application/json
 
+### article page count
+GET http://{{baseURL}}/article/pageCount
