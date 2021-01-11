@@ -1,8 +1,9 @@
 <% /* 页脚 */ %>
+<%var baseURL = "http://192.168.0.102:3000"%>
 
 <footer class="bs-docs-footer bottom">
     <div class="container-fluid">
-        <div class="col-md-4">
+        <div class="col-xs-4">
             <ul>
                 <li>
                     <em>猫猫的个人博客</em>
@@ -15,17 +16,17 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-6">
+        <div class="col-xs-6">
             <a class="text-muted" href="https://beian.miit.gov.cn/">这里放备案号</a>
             <p class="text-muted text-left">
                 巴拉巴拉一些底部说明
             </p>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-2">
             <address>
                 <strong>sumover.cn</strong>
             </address>
-            <embed src="http://localhost:3000/猫猫博客ico.svg" height="70" width="70">
+            <embed src="<%=baseURL%>/猫猫博客ico.svg" height="70" width="70">
         </div>
     </div>
 
