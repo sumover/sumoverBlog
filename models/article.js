@@ -39,6 +39,24 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "articleDetail"
+    },
+    showStatus: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: "show",
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "showStatus"
+    },
+    readCount: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: "0",
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "readCount"
     }
   };
   const options = {
