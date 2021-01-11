@@ -23,10 +23,23 @@ module.exports = {
             var publishedUser = await UserModel.findOne({where: {id: com.userId}});
             commentListRes.push({
                 content: com.content,
-                publishedTime: moment(Number(com.publishedTime)).format("YYYY-MM-DD"),
+                publishedTime: moment(Number(com.publishedTime)).format("YYYY-MM-DD HH:mm"),
                 publisher: (publishedUser === null) ? "用户已注销" : publishedUser.username,
             });
         }
         return commentListRes;
+    },
+    publishComment: async (articleId, userId, commentContent) => {
+        var commentCreated = await CommentModel.create({
+            articleId: articleId,
+            userId: userId,
+            content: commentContent,
+            publishedTime: Date.now()
+        });
+        return {
+            content: commentContent,
+            publishedTime: moment(Number(commentCreated.publishedTime)).format("YYYY-MM-DD HH:mm"),
+            publisher: (await UserModel.findOne({where: {id: userId}})).username
+        };
     }
 }
