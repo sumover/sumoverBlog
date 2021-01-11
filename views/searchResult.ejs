@@ -3,9 +3,35 @@
 <html>
 <body>
 <%- include guideHeader.ejs %>
-<div class="container" role="main">
-    <h1>search result page</h1>
+<div id="search-result-container" class="container" role="main">
+    <div class="row page-header">
+        <h1>search result page</h1>
+        <h2 class="text-info">目前仅支持标题及标签相关搜索..内容搜索开发中..</h2>
+        <small>猫猫老菜鸡了</small>
+    </div>
+    <div class="row">
+        <div class="col-lg-10">
+            <table class="table table-striped">
+                <tr v-for="n in resultNumber">
+                    <td>
+                        <h2>233333</h2>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
+<script>
+    var vm_search_result_container = new Vue({
+        el: "#search-result-container",
+        data: {
+            resultNumber: 10
+        },
+        mounted() {
+        },
+        methods: {}
+    })
+</script>
 </body>
 </html>
 
