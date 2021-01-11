@@ -13,12 +13,12 @@ const appConfig = require('../app-config');
 
 module.exports = {
     fetchArticleDetail: async (aid) => {
-        var articleRes = await ArticleModel.findAll({
+        var articleRes = await ArticleModel.findOne({
             where: {
                 id: aid
             }
         });
-        if (articleRes.length === 0) return null;
+        if (articleRes === null) return null;
         marked.setOptions({
             renderer: new marked.Renderer(),
             headerIds: true,
@@ -31,7 +31,8 @@ module.exports = {
             smartLists: true,
             smartypants: false,
         });
-        return marked(articleRes[0].articleDetail);
+        if (typeof (articleRes.articleDetail) === "undefined" || articleRes.articleDetail === null) return null;
+        else return marked(articleRes.articleDetail);
     },
     /**
      * 获取单个文章实体
