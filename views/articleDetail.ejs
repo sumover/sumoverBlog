@@ -7,49 +7,100 @@
 <html>
 <body>
 <%- include guideHeader.ejs %>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-2">
-
+<% if (title === "article missing"){ %>
+    <div class="container">
+        <div class="col-md-6">
+            <h1>文章好像不见了呢 ╮(￣▽￣)╭</h1>
+            <a href="mailto:sumover@foxmail.com" class="btn btn-primary btn-sm">联系猫猫找回这篇文章>></a>
         </div>
-        <div class="col-md-8">
-            <%- articleHTML %>
+        <div class="colmd-4">
+
+            <img src="<%= baseURL %>/images/猫猫哭泣.jpg" class="page-header">
         </div>
     </div>
-    <div class="modal fade" id="img-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body" id="img-modal-body"></div>
-                <div class="modal-footer" id="">
-                    <p class="text-center" id="img-modal-footer"></p>
-                </div>
+<% } else { %>
+
+    <div class="container" id="container-article-detail">
+        <%# 文章头 %>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-11 page-header">
+                <h1 id="article-title"><%= title %></h1>
+                <p>
+                <abbr>
+                    标签:
+                </abbr>
+                <span class="label label-info">Info</span>
+                <span class="label label-info">Info</span>
+                <span class="label label-info">Info</span>
+                </p>
             </div>
-            <
+        </div>
+        <%# 文章主体 %>
+        <div class="row">
+            <div class="col-sm-1"></div>
+
+            <div class="col-lg-10" id="article-content">
+                <%- articleHTML %>
+            </div>
+        </div>
+
+        <%# 文章评论板块 %>
+        <div class="row page-header">
+            评论模块
+        </div>
+        <div class="row">
+            评论区
+        </div>
+        <div class="modal fade" id="img-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body" id="img-modal-body"></div>
+                    <div class="modal-footer" id="">
+                        <p class="text-center" id="img-modal-footer"></p>
+                    </div>
+                </div>
+                <
+            </div>
         </div>
     </div>
+
+    <style>
+        #article-content img {
+            width: 70%;
+            height: 70%;
+        }
+
+    </style>
     <script>
-        $('img').each((index, element) => {
-            element.id = `img-id-${index}`;
+        var vm_article_detail_container = new Vue({
+            el: "#container-article-detail",
+            data: {
+                articleId: "<%= articleId %>"
+            },
+            async mounted() {
+                $('img').each((index, element) => {
+                    element.id = `img-id-${index}`;
 
-            element.onclick = () => {
-                $('#img-modal').modal('show');
-                $('#img-modal-body').html(`<img src="${element.src}" alt=${element.alt} style="height: 100%;width: 100%"> `);
-                $('#img-modal-footer').text(element.alt);
-            }
-            console.log(`img ${index} catch from ${element.src}`);
-            // var inHTML = $(this).html();
-            // $(this).attr('onclick', `showModal(${inHTML})`)
-        })
+                    element.onclick = function () {
+                        console.log('show modal');
+                        $('#img-modal').modal('show');
+                        $('#img-modal-body').html(
+                            `<img src="${element.src}" alt=${element.alt} style="height: 100%;width: 100%"> `);
+                        $('#img-modal-footer').text(element.alt);
+                    };
+                    console.log(`img ${index} catch from ${element.src}`);
+                    $('table').addClass('table table-bordered table-hover');
+                    // var inHTML = $(this).html();
+                    // $(this).attr('onclick', `showModal(${inHTML})`)
+                });
+            },
+            methods: {}
+        });
     </script>
-</div>
-<style>
-    img {
-        width: 100%;
-        height: 100%;
-    }
-</style>
 
+<% } %>
 <%- include pagefoot.ejs %>
 </body>
 </html>
