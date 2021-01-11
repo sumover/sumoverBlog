@@ -31,7 +31,8 @@
                 <ul class="nav navbar-nav navbar-right">
                     <template v-if="!loginStatus">
                         <li>
-                            <a id="modal-288059" href="#modal-container-288059" data-toggle="modal">login</a>
+                            <a class="navbar-brand" id="modal-288059" href="#modal-container-288059"
+                               data-toggle="modal">login</a>
                         </li>
                     </template>
                     <template v-else>
@@ -39,6 +40,7 @@
                             <a href="#">{{ loginUser.username }}</a>
                         </li>
                     </template>
+                    <li></li>
                     <li class="<%= typeof (isAbout) !== "undefined" ? "active" : "" %>">
                         <a class="navbar-brand" href="/about">about</a>
                     </li>
@@ -144,7 +146,7 @@
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                                         </button>
                                         <a href="mailto:sumover@foxmail.com" type="button" class="btn btn-info"
-                                           >去给猫猫写一封邀请码的邮件~</a>
+                                        >去给猫猫写一封邀请码的邮件~</a>
                                         <button type="button" class="btn btn-primary" @click="userRegister">猫猫注册
                                         </button>
                                     </div>
