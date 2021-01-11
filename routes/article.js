@@ -32,8 +32,21 @@ router.get('/:id/detail', urlEncodeParser, async (req, res, next) => {
 
     var article = await articleService.fetchArticle(articleId);
 
-    var resOption = {title: article.title, articleHTML: articleDetail};
 
+    if (article === "null" ||
+        article.showStatus !== "show") {
+        res.render('articleDetail', {
+            title: "article missing"
+        });
+        return
+    }
+    await articleService.articleReadPlus(articleId);
+    var resOption = {
+        title: article.title,
+        articleHTML: articleDetail,
+        articleId: articleId
+
+    };
     res.render('articleDetail', resOption);
 });
 
@@ -44,6 +57,7 @@ router.get('/articleList', urlEncodeParser, async (req, res, next) => {
     for (var index in articleList) {
         articleList[index].articleDetail = "预览页面暂时不予显示";
         articleList[index].createTime = moment(Number(articleList[index].createTime)).format("YYYY-MM-DD");
+
     }
     res.json({
         message: "query success",
