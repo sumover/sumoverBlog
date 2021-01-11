@@ -1,14 +1,19 @@
 //
 //  article.js
 //  http://localhost:3000/article/
+//
 
 const express = require('express');
 const router = express.Router();
 const bodyParser = require("body-parser");
 const urlEncodeParser = bodyParser.urlencoded({extend: false});
-const articleService = require('../services/ArticleService');
 const AppConfig = require("../app-config");
 const moment = require('moment');
+
+//  service import
+const articleService = require('../services/ArticleService');
+const commentService = require('../services/CommentService');
+
 
 /**
  * 文章列表
@@ -19,10 +24,10 @@ router.get('/', async (req, res, next) => {
         isArticleList: true
     };
     res.render('articleList', option);
-})
+});
 
 /**
- * 文章内容的GET方法
+ * RESTUrl=>文章内容的GET方法
  * 返回一个html
  */
 router.get('/:id/detail', urlEncodeParser, async (req, res, next) => {
@@ -44,12 +49,42 @@ router.get('/:id/detail', urlEncodeParser, async (req, res, next) => {
     var resOption = {
         title: article.title,
         articleHTML: articleDetail,
-        articleId: articleId
-
+        articleId: articleId,
+        loginStatus: typeof (req.session.loginUser) !== "undefined"
     };
     res.render('articleDetail', resOption);
 });
 
+/**
+ * 文章标签
+ */
+router.get('/articleLabelList', urlEncodeParser, async (req, res, next) => {
+    var articleId = req.query.articleId;
+
+    if ((await articleService.fetchArticle(articleId)) === "no article") {
+        res.json({
+            message: "article not exist"
+        });
+        return
+    }
+
+    let articleLabels = await articleService.queryArticleLabelList(articleId);
+
+    if (articleLabels.length === 0) {
+        res.json({
+            message: "article no label"
+        });
+        return
+    }
+    res.json({
+        message: "article label list query success",
+        articleLabelList: articleLabels
+    }).end();
+});
+
+/**
+ * 文章列表
+ */
 router.get('/articleList', urlEncodeParser, async (req, res, next) => {
     var page = req.query.page;
     console.log(`browser query article list page=${page}`);
@@ -65,11 +100,37 @@ router.get('/articleList', urlEncodeParser, async (req, res, next) => {
     }).end();
 });
 
+/**
+ * 查询一共有多少页
+ */
 router.get('/pageCount', urlEncodeParser, async (req, res, next) => {
     var articleListLength = await articleService.getArticleLength();
 
     res.json(Math.ceil(articleListLength / AppConfig.pageLength));
 });
 
+/**
+ * 查询本文章的评论列表
+ */
+router.get('/articleComments', urlEncodeParser, async (req, res, next) => {
+    var articleId = req.query.aid;
+    if ((await articleService.fetchArticle(articleId)) === "no article") {
+        res.json({
+            message: "article not exist"
+        }).end();
+        return
+    }
+    var commentList = await commentService.getArticleCommentList(articleId);
+    if (commentList.length === 0) {
+        res.json({
+            message: "no comment"
+        }).end();
+    } else {
+        res.json({
+            message: "query comment success",
+            commentList: commentList
+        })
+    }
+});
 
 module.exports = router;

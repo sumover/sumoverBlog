@@ -9,3 +9,12 @@ Accept: application/json
 
 ### article page count
 GET http://{{baseURL}}/article/pageCount
+Accept: application/json
+
+### article label list fetch
+GET http://{{baseURL}}/article/articleLabelList?articleId=1
+Accept: application/json
+
+### article comment list fetch
+GET http://{{baseURL}}/article/articleComments?aid=4
+Accept: application/json
