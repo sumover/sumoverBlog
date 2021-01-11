@@ -6,10 +6,11 @@ module.exports = {
     routerPath: path.join(__dirname, "routes"),
     inviteCodeNumber: 5,
     urlMapping: [
-        {url: "/", router: "index"},
-        {url: "/users", router: "users"},
-        {url: "/search", router: "search"},
-        {url: "/article", router: "article"}
+        {url: "/", router: "indexRouter"},
+        {url: "/users", router: "usersRouter"},
+        {url: "/search", router: "searchRouter"},
+        {url: "/article", router: "articleRouter"},
+        {url: "/administrator", router: "administratorRouter"}
     ],
     baseURL: "http://localhost:3000",
     pageLength: 10
