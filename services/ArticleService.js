@@ -2,8 +2,10 @@ const marked = require('marked');
 const {QueryTypes, DataTypes} = require('sequelize');
 const db = require("../db");
 const Sequelize = db.sequelize;
+//  import model
 const ArticleModel = require("../models/article")(Sequelize, DataTypes);
-
+const LabelModel = require('../models/label')(Sequelize, DataTypes);
+// util import
 const moment = require('moment');
 const crypto = require('crypto');
 const appConfig = require('../app-config');
@@ -31,6 +33,12 @@ module.exports = {
         });
         return marked(articleRes[0].articleDetail);
     },
+    /**
+     * 获取单个文章实体
+     * 文章不存在时返回"no article"
+     * @param aid
+     * @returns {Promise<string|*>}
+     */
     fetchArticle: async (aid) => {
         var articleRes = await ArticleModel.findAll({
             where: {
@@ -71,6 +79,18 @@ module.exports = {
                 id: articleId
             }
         });
+    },
+    queryArticleLabelList: async (articleId) => {
+        var labels = await LabelModel.findAll({
+            where: {
+                articleId: articleId
+            }
+        });
+        var labelRes = [];
+        for (var label of labels) {
+            labelRes.push(label.labelInfo);
+        }
+        return labelRes;
     }
 
 }
