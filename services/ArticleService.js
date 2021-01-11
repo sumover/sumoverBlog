@@ -19,9 +19,11 @@ module.exports = {
         if (articleRes.length === 0) return null;
         marked.setOptions({
             renderer: new marked.Renderer(),
+            headerIds: true,
             gfm: true,
             tables: true,
-            breaks: false,
+            breaks: true,
+            mangle: true,
             pedantic: false,
             sanitize: false,
             smartLists: true,
@@ -47,11 +49,28 @@ module.exports = {
         });
 
         var articleList = [];
-        for (let i = beginIndex; i < Math.min(endIndex, articleListRes.length); ++i) articleList.push(articleListRes[i]);
+        for (let i = beginIndex; i < Math.min(endIndex, articleListRes.length); ++i) {
+            if (articleListRes[i].showStatus !== 'show') continue;
+            articleList.push(articleListRes[i]);
+        }
         return articleList;
     },
     getArticleLength: async () => {
         var res = await ArticleModel.count();
         return res;
+    },
+    articleReadPlus: async (articleId) => {
+        var article = await ArticleModel.findOne({
+            where: {
+                id: articleId
+            }
+        });
+        console.log(`article have read ${article.readCount + 1} times`);
+        await ArticleModel.update({readCount: article.readCount + 1}, {
+            where: {
+                id: articleId
+            }
+        });
     }
+
 }
