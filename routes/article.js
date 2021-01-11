@@ -13,7 +13,7 @@ const moment = require('moment');
 //  service import
 const articleService = require('../services/ArticleService');
 const commentService = require('../services/CommentService');
-
+const userService = require("../services/UserService");
 
 /**
  * 文章列表
@@ -132,5 +132,25 @@ router.get('/articleComments', urlEncodeParser, async (req, res, next) => {
         })
     }
 });
+
+/**
+ * 添加评论
+ */
+router.post('/publishComment', urlEncodeParser, async (req, res, next) => {
+    var commentContent = req.body.commentContent;
+    var articleId = req.body.articleId;
+    if (typeof (req.session.loginUser) === "undefined") {
+        res.json({message: "user not login"});
+        return
+    }
+    var userId = req.session.loginUser.id;
+    var commentCreated = await commentService.publishComment(articleId, userId, commentContent);
+
+    res.json({
+        message: "comment published success",
+        commentCreated: commentCreated
+    });
+});
+
 
 module.exports = router;
