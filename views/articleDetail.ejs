@@ -1,13 +1,13 @@
 <%- include header.ejs %>
 <% var baseURL = "http://localhost:3000/" %>
-<link rel="stylesheet" href="<%= baseURL %>/highlight/styles/idea.css">
-<script src="<%= baseURL %>/highlight/highlight.pack.js"></script>
+<link rel="stylesheet" href="<%= baseURL %>/highlight/styles/idea.css" xmlns="http://www.w3.org/1999/html">
+
 <script>hljs.initHighlightingOnLoad()</script>
 
 <html>
 <body>
 <%- include guideHeader.ejs %>
-<% if (title === "article missing"){ %>
+<% if (title === "article missing") { %>
     <div class="container">
         <div class="col-md-6">
             <h1>文章好像不见了呢 ╮(￣▽￣)╭</h1>
@@ -23,23 +23,26 @@
     <div class="container" id="container-article-detail">
         <%# 文章头 %>
         <div class="row">
-            <div class="col-lg-1"></div>
+            <div class="col-lg-1">
+
+            </div>
             <div class="col-lg-11 page-header">
                 <h1 id="article-title"><%= title %></h1>
                 <p>
-                <abbr>
-                    标签:
-                </abbr>
-                <span class="label label-info">Info</span>
-                <span class="label label-info">Info</span>
-                <span class="label label-info">Info</span>
+                    <abbr>
+                        标签:
+                    </abbr>
+                    <template v-for="label in articleLabelList">
+                        <a href="#" class="label label-info">{{label}}</a>
+                    </template>
                 </p>
             </div>
         </div>
         <%# 文章主体 %>
-        <div class="row">
-            <div class="col-sm-1"></div>
-
+        <div class="row page-header" id="page-header-row">
+            <div class="col-lg-1">
+                <!--<%#TODO:侧边导航 %>-->
+            </div>
             <div class="col-lg-10" id="article-content">
                 <%- articleHTML %>
             </div>
@@ -47,29 +50,80 @@
 
         <%# 文章评论板块 %>
         <div class="row page-header">
-            评论模块
+            <div class="col-lg-1">
+                <h5 class="text-primary">
+                    评论(1233)
+                </h5>
+            </div>
+            <div class="col-lg-8 center-block">
+                <textarea id="comment-textarea" placeholder="<%= loginStatus ? "发表一个友善的评论~" : "好像还没登录哦~" %>"
+                      <%= !loginStatus ? "disabled" : "" %> >
+
+            </textarea>
+            </div>
+            <div class="col-lg-1">
+                <button class="btn btn-lg btn-primary"
+                        style="height: 100px;width: 100px;"
+                        <%= !loginStatus ? "disabled" : "" %>
+                        @click="publishComment"><%- !loginStatus ? "先登录嘛" : "发表<br>评论" %>
+                </button>
+            </div>
         </div>
+        <%# 盖楼.jpg %>
         <div class="row">
-            评论区
-        </div>
-        <div class="modal fade" id="img-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body" id="img-modal-body"></div>
-                    <div class="modal-footer" id="">
-                        <p class="text-center" id="img-modal-footer"></p>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-8">
+                <template v-if="articleCommentList.length === 0">
+                    <div class="text-center">
+                        好像还没有评论呢...
+                    </div>
+                </template>
+                <div class="panel panel-default" v-for="(comment, index) in articleCommentList">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <p class="text-left text-primary">
+                                    {{ comment.publisher }}
+                                </p>
+                            </div>
+                            <div class="col-lg-4">
+                                <p class="text-right">
+                                    评论于:{{ comment.publishedTime }}
+                                </p>
+                            </div>
+                            <div class="col-lg-4">
+                                #{{ index + 1 }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.content }}
                     </div>
                 </div>
-                <
+            </div>
+        </div>
+        <%#显示图片用的模态框%>
+        <div class="modal fade" id="img-modal"
+             aria-hidden="true">
+            <!--            <div class="modal-dialog">-->
+            <div class="modal-content col-lg-12">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body" id="img-modal-body"></div>
+                <div class="modal-footer" id="">
+                    <p class="text-center" id="img-modal-footer"></p>
+                    <!--                    </div>-->
+                </div>
             </div>
         </div>
     </div>
 
     <style>
-        #article-content img {
-            width: 70%;
-            height: 70%;
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
         }
 
     </style>
@@ -77,11 +131,32 @@
         var vm_article_detail_container = new Vue({
             el: "#container-article-detail",
             data: {
-                articleId: "<%= articleId %>"
+                articleId: "<%= articleId %>",
+                articleLabelList: null,
+                articleCommentList: []
             },
             async mounted() {
+                // query labels
+                var articleLabelListRes = await axios.get("/article/articleLabelList", {
+                    params: {articleId: this.articleId}
+                });
+
+                if (articleLabelListRes.data.message === "article label list query success")
+                    this.articleLabelList = articleLabelListRes.data.articleLabelList;
+                else this.articleLabelList = [];
+
+                // query comments
+                var articleCommentListRes = await axios.get('/article/articleComments', {
+                    params: {aid: this.articleId}
+                });
+                if (articleCommentListRes.data.message === "query comment success") {
+                    this.articleCommentList = articleCommentListRes.data.commentList;
+                }
+
+                //  jQuery operation
                 $('img').each((index, element) => {
                     element.id = `img-id-${index}`;
+                    element.style = "width: 50%; height: 50%;";
 
                     element.onclick = function () {
                         console.log('show modal');
@@ -96,7 +171,11 @@
                     // $(this).attr('onclick', `showModal(${inHTML})`)
                 });
             },
-            methods: {}
+            methods: {
+                publishComment: async () => {
+
+                }
+            }
         });
     </script>
 
