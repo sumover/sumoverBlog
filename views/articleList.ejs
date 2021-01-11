@@ -6,7 +6,7 @@
 <script src="<%= baseurl %>/javascripts/moment.js"></script>
 <div class="container" role="main" id="article-list-main">
     <div class="row clearfix">
-        <h1>猫猫都写了啥呢?</h1>
+        <h1 id="article-list-title">猫猫都写了啥呢?</h1>
         <img src="<%= baseurl %>/images/猫猫观察.jpg" alt="猫猫观察">
         <div>
             <table class="table table-striped">
@@ -27,13 +27,13 @@
     <div class="row clearfix">
         <ul class="pagination">
             <li>
-                <a href="#">Prev</a>
+                <a href="#article-list-title" @click="prevPage">Prev</a>
             </li>
             <li v-bind:class="{'active':(curActiveIndex === pageIndex)}" v-for="pageIndex in pageCount">
-                <a href="#">{{pageIndex}}</a>
+                <a href="#article-list-title" @click="gotoPage(pageIndex)">{{pageIndex}}</a>
             </li>
             <li>
-                <a href="#">Next</a>
+                <a href="#article-list-title" @click="nextPage">Next</a>
             </li>
         </ul>
     </div>
@@ -54,7 +54,37 @@
             this.curLoadArticleList = articleListRes.data.articleList;
             this.curActiveIndex = 1;
         },
-        methods: {}
+        methods: {
+            gotoPage: async (pageIndex) => {
+                var articleListRes = await axios.get('/article/articleList', {
+                    params: {
+                        page: pageIndex
+                    }
+                });
+                vm_article_list_main.curLoadArticleList = articleListRes.data.articleList;
+                vm_article_list_main.curActiveIndex = pageIndex;
+            },
+            prevPage: async () => {
+                if (vm_article_list_main.curActiveIndex === 1) return;
+                vm_article_list_main.curActiveIndex--;
+                var articleListRes = await axios.get('/article/articleList', {
+                    params: {
+                        page: vm_article_list_main.curActiveIndex
+                    }
+                });
+                vm_article_list_main.curLoadArticleList = articleListRes.data.articleList;
+            },
+            nextPage: async () => {
+                if (vm_article_list_main.curActiveIndex === vm_article_list_main.pageCount) return;
+                vm_article_list_main.curActiveIndex++;
+                var articleListRes = await axios.get('/article/articleList', {
+                    params: {
+                        page: vm_article_list_main.curActiveIndex
+                    }
+                });
+                vm_article_list_main.curLoadArticleList = articleListRes.data.articleList;
+            }
+        }
     })
 </script>
 
