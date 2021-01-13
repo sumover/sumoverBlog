@@ -1,6 +1,5 @@
 <%- include header.ejs %>
 <% var baseurl = "http://localhost:3000" %>
-<!-- TODO archive页面-->
 <html>
 <body>
 <%- include guideHeader.ejs %>
@@ -10,7 +9,7 @@
         <h1 class="text-primary page-header">标签云</h1>
         <div class="jumbotron">
             <% for (var tag of tagCloud) { %>
-                <a href="/tag?t=<%= tag.labelInfo %>" class="label label-info"><%= tag.labelInfo %></a>
+                <a href="/tag?tag=<%= tag.labelInfo %>" class="label label-info"><%= tag.labelInfo %></a>
             <% } %>
         </div>
 
