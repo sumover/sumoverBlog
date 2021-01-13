@@ -1,2 +1,38 @@
 <%- include header.ejs %>
+<% var baseurl = "http://localhost:3000" %>
 <!-- TODO archive页面-->
+<html>
+<body>
+<%- include guideHeader.ejs %>
+
+<div id="archive-container" class="container" role="main">
+    <div class="row">
+        <h1 class="text-primary page-header">标签云</h1>
+        <div class="jumbotron">
+            <a href="#" class="label label-info">SQL</a>
+            <a href="#" class="label label-info">sequelize</a>
+            <a href="#" class="label label-info">jquery</a>
+            <a href="#" class="label label-info">express</a>
+        </div>
+
+        <h1 class="text-primary page-header">时间轴</h1>
+        <ul class="layui-timeline">
+            <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                <div class="layui-timeline-content layui-text">
+                    <h3>
+                        <a class="text text-success layui-timeline-title" href="#">8月18日</a>
+                    </h3>
+                    <ul>
+                        <li>
+                            <a href="#">nodejs+Express学习总结</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<%- include pagefoot.ejs %>
+</body>
+</html>
