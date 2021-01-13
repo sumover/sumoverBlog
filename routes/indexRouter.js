@@ -40,14 +40,17 @@ router.get('/archives', urlEncodeParser,
         res.render('archives', {
             title: "archives",
             tagCloud: tagCloud,
-            articleTimeList: articleListGroupByTime
+            articleTimeList: articleListGroupByTime,
+            isArchives: true
         });
     });
 
 router.get('/tag', urlEncodeParser,
     /**
      * 以标签为分类的静态索引页面
+     *
      * url举例: {{baseURL}}/tag?t=sql
+     *
      * 无参查询时, 跳转至list页面
      * @param req
      * @param res
@@ -56,34 +59,39 @@ router.get('/tag', urlEncodeParser,
      */
     async (req, res, next) => {
         var tag = req.query.tag;
-
         if (tag === "" || tag === undefined) {
             res.redirect('/article');
             return
         }
 
-        res.render('classifyByTag', {title: `archives|${tag}`});
+        res.render('classifyByTag', {
+            title: `archives|${tag}`,
+            tag: tag,
+            articleList: await articleService.queryArticleByLabel(tag),
+            isArchives: true
+        });
     });
 
 router.get('/date', urlEncodeParser,
     /**
      * 以日期为分类的静态索引页面
-     * 共有三个参数: year, mouth, day
-     * url举例:
-     *  1.  查询某天(标准url):    {{baseURL}}/date?year=2020&mouth=1&day=1
-     *  2.  根据format的字符串查询: {{baseURL}}/date?date=2020-1-1
-     *  2.  查询某年:            {{baseURL}}/date?year=2020
-     *  3.  查询某月:            {{baseURL}}/date?year=2020&mouth=1
-     *  4.  无参数查询:跳转至list页面
+     *
+     * url举例
+     * > {{baseURL}}/date?date=2020-1-1
      * @param req
      * @param res
      * @param next
      * @returns {Promise<void>}
      */
     async (req, res, next) => {
-        var year = req.query.year, mouth = req.query.mouth, day = req.query.day;
+        var _date = req.query.date;
 
-        res.render('classifyByDate',);
+        res.render('classifyByDate', {
+            title: `archives|${_date}`,
+            date: _date,
+            articleList: await articleService.queryArticleByDate(_date),
+            isArchives: true
+        });
     });
 
 
