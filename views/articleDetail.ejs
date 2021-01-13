@@ -38,9 +38,8 @@
                     <abbr>
                         标签:
                     </abbr>|
-                    <!-- TODO: 挂载到以标签为分类的链接 -->
                     <template v-for="label in articleLabelList">
-                        <a href="#" class="label label-info">{{label}}</a> |
+                        <a v-bind:href="'/tag?tag='+label" class="label label-info">{{label}}</a> |
                     </template>
                 </p>
                 <br>
