@@ -37,7 +37,11 @@ router.get('/archives', urlEncodeParser,
         var tagCloud = await articleService.tagCloudGenerator();
         var articleListGroupByTime = await articleService.articleTimeline();
 
-        res.render('archives', {title: "archives"});
+        res.render('archives', {
+            title: "archives",
+            tagCloud: tagCloud,
+            articleTimeList: articleListGroupByTime
+        });
     });
 
 router.get('/tag', urlEncodeParser,
@@ -67,6 +71,7 @@ router.get('/date', urlEncodeParser,
      * 共有三个参数: year, mouth, day
      * url举例:
      *  1.  查询某天(标准url):    {{baseURL}}/date?year=2020&mouth=1&day=1
+     *  2.  根据format的字符串查询: {{baseURL}}/date?date=2020-1-1
      *  2.  查询某年:            {{baseURL}}/date?year=2020
      *  3.  查询某月:            {{baseURL}}/date?year=2020&mouth=1
      *  4.  无参数查询:跳转至list页面

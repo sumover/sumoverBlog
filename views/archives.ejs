@@ -9,27 +9,34 @@
     <div class="row">
         <h1 class="text-primary page-header">标签云</h1>
         <div class="jumbotron">
-            <a href="#" class="label label-info">SQL</a>
-            <a href="#" class="label label-info">sequelize</a>
-            <a href="#" class="label label-info">jquery</a>
-            <a href="#" class="label label-info">express</a>
+            <% for (var tag of tagCloud) { %>
+                <a href="/tag?t=<%= tag.labelInfo %>" class="label label-info"><%= tag.labelInfo %></a>
+            <% } %>
         </div>
 
         <h1 class="text-primary page-header">时间轴</h1>
         <ul class="layui-timeline">
-            <li class="layui-timeline-item">
-                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                <div class="layui-timeline-content layui-text">
-                    <h3>
-                        <a class="text text-success layui-timeline-title" href="#">8月18日</a>
-                    </h3>
-                    <ul>
-                        <li>
-                            <a href="#">nodejs+Express学习总结</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            <% for (var articleList of articleTimeList) { %>
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3>
+                            <a class="text text-success layui-timeline-title"
+                               href="/date?date=<%= articleList.time %>"><%= articleList.time %></a>
+                        </h3>
+                        <ul>
+                            <% for (var article of articleList.articleList) { %>
+                                <li>
+                                    <em>
+                                        <a style="color: grey"
+                                           href="/article/<%= article.articleId %>/detail"><%= article.title %></a>
+                                    </em>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </li>
+            <% } %>
         </ul>
     </div>
 </div>
