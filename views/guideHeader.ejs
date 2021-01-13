@@ -40,10 +40,11 @@
                             <a href="#">{{ loginUser.username }}</a>
                         </li>
                     </template>
-                    <li></li>
+
                     <li class="<%= typeof (isAbout) !== "undefined" ? "active" : "" %>">
                         <a class="navbar-brand" href="/about">about</a>
                     </li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">ovo<strong
                                     class="caret"></strong></a>
@@ -172,7 +173,7 @@
                     <div class="modal-body">
                         <div class="jumbotron">
                             <ul>
-                                <li v-for="inviteCode in fetchesInviteCodes">
+                                <li class="text-center" v-for="inviteCode in fetchesInviteCodes">
                                     {{inviteCode.code}}
                                 </li>
                             </ul>
