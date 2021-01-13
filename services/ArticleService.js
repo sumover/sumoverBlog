@@ -8,13 +8,14 @@ const LabelModel = require('../models/label')(Sequelize, DataTypes);
 const moment = require('moment');
 const crypto = require('crypto');
 const appConfig = require('../app-config');
-const marked = require('marked');
+const marked = require('marked-katex');
+const katex = require('katex');
 
 module.exports = {
     /**
      * 获取文章内容的HTML文本
      * @param aid : 文章id
-     * @returns {Promise<*|null>} : 文章的HTML文本
+     * @returns {Promise<string|null>} : 文章的HTML文本
      */
     fetchArticleDetail: async (aid) => {
         var articleRes = await ArticleModel.findOne({
@@ -34,6 +35,7 @@ module.exports = {
             sanitize: false,
             smartLists: true,
             smartypants: false,
+            kaTex: katex
         });
         if (typeof (articleRes.articleDetail) === "undefined" || articleRes.articleDetail === null) return null;
         else return marked(articleRes.articleDetail);
@@ -42,7 +44,7 @@ module.exports = {
     /**
      * 获取单个文章实体
      * 文章不存在时返回"no article"
-     * @param aid
+     * @param aid : 文章id
      * @returns {Promise<string|*>}
      */
     fetchArticle: async (aid) => {
@@ -60,7 +62,7 @@ module.exports = {
      * 获取文章列表, 范围为[(index-1)*page, index*page]
      * @param index
      * @param step
-     * @returns {Promise<[]>}
+     * @returns {Promise<[article]>}
      */
     queryArticleLists: async (index, step) => {
         var beginIndex = step * (index - 1);
@@ -79,7 +81,7 @@ module.exports = {
 
     /**
      * 获取文章数量
-     * @returns {Promise<*>}
+     * @returns {Promise<Number>}
      */
     getArticleLength: async () => {
         var res = await ArticleModel.count();
@@ -107,7 +109,7 @@ module.exports = {
     /**
      * 获取某文章的标签列表
      * @param articleId
-     * @returns {Promise<[]>}
+     * @returns {Promise<[label]>}
      */
     queryArticleLabelList: async (articleId) => {
         var labels = await LabelModel.findAll({
@@ -166,19 +168,54 @@ module.exports = {
                 'labelInfo',
                 [Sequelize.fn('COUNT', Sequelize.col('labelInfo')), 'labelTimes']
             ],
-            group: 'labelInfo',
-            order: ['labelTimes',],
+            group: 'labelInfo'
         });
-        return labelList;
+
+        return labelList.sort((l1, l2) => {
+            if (l1.labelTimes > l2.labelTimes) return -1;
+            else if (l1.labelTimes < l2.labelTimes) return 1;
+            else return 0;
+        });
     },
     /**
      * 生成文章的时间轴数据结构
      * @returns {Promise<[{
      *     time: string,
-     *     articleList:[{article}]
+     *     articleList:[{
+     *         articleId:Number,
+     *         title:string
+     *     }]
      * }]>}
      */
     articleTimeline: async () => {
-
+        var articleListOrigin = await ArticleModel.findAll({
+            order: [
+                ['createTime', 'DESC'],
+            ]
+        });
+        var resArticleList = [];
+        resArticleList.push({
+            time: moment(Number(articleListOrigin[0].createTime)).format("YYYY-MM-DD"),
+            articleList: []
+        });
+        for (var article of articleListOrigin) {
+            if (article.showStatus !== "show") continue;
+            //  get cur iter `article` createTime format to YYYY-MM-DD
+            var curTime = moment(Number(article.createTime)).format("YYYY-MM-DD");
+            //  if cur time is different to the last time of resArticleList
+            if (resArticleList[resArticleList.length - 1].time !== curTime) {
+                //  add new articleList
+                resArticleList.push({
+                    time: curTime,
+                    articleList: []
+                });
+            }
+            // add the Entry into the last List of resArticleList
+            resArticleList[resArticleList.length - 1].articleList.push({
+                articleId: article.id,
+                title: article.title
+            });
+        }
+        return resArticleList;
     }
 }
