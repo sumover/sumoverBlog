@@ -4,6 +4,12 @@
 <script src="<%= baseURL %>/highlight/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
+<!--Katex渲染器-->
+<link rel="stylesheet" href="../../../katex/katex.css">
+<script defer src="../../../katex/katex.js"></script>
+<script src="../../../katex/contrib/auto-render.js"></script>
+
+
 <html>
 <body>
 <%- include guideHeader.ejs %>
@@ -31,11 +37,15 @@
                 <p>
                     <abbr>
                         标签:
-                    </abbr>
+                    </abbr>|
+                    <!-- TODO: 挂载到以标签为分类的链接 -->
                     <template v-for="label in articleLabelList">
                         <a href="#" class="label label-info">{{label}}</a> |
                     </template>
                 </p>
+                <br>
+                <!-- TODO: 挂载到以日期为分类的链接 -->
+                <h5><a href="#"><%= articleCreateTime %></a></h5>
             </div>
         </div>
         <%# 文章主体 %>
@@ -177,6 +187,13 @@
                     // var inHTML = $(this).html();
                     // $(this).attr('onclick', `showModal(${inHTML})`)
                 });
+                //  TODO: 捕获$$并使用katex渲染.
+                //  katex
+                $('code').filter('.language-math').each((index, element) => {
+                    console.log(`render math latex code ${element.innerText}`);
+                    katex.render(element.innerText, element);
+                });
+
             },
             methods: {
                 publishComment: async () => {
