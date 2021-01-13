@@ -1,5 +1,5 @@
 ### article detail
-GET http://{{baseURL}}/article/1/detail
+GET http://{{baseURL}}/article/6/detail
 
 
 
