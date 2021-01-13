@@ -1,2 +1,37 @@
 <%- include header.ejs %>
-<!--TODO 日期分类页面-->
+<html>
+<body>
+<%- include guideHeader.ejs %>
+<div class="container" role="main">
+    <div class="row">
+        <h1 class="page-header">
+            分类: <%= date %>
+        </h1>
+        <img src="../images/猫猫打人.gif" alt="qaq" style="height: 120px;width: 120px;">
+        <table class="table table-striped">
+            <tbody>
+            <% if (articleList.length === 0) { %>
+                <tr>
+                    <p class="page-header"></p>
+                    好像没有博客呢...
+                </tr>
+            <% } else { for (var article of articleList) { %>
+                <tr>
+                    <td class="col-md-6">
+                        <a href="/article/<%= article.articleId %>/detail/" class="h3 text-info text-center">
+                            <%= article.title %></a>
+                    </td>
+                    <td class="col-md-4">
+                        <h3 class="text-info text-center">
+                            <%= article.createTime %>
+                        </h3>
+                    </td>
+                </tr>
+            <% }} %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<%- include pagefoot.ejs %>
+</body>
+</html>
