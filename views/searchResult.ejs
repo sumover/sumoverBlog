@@ -5,28 +5,58 @@
 <%- include guideHeader.ejs %>
 <div id="search-result-container" class="container" role="main">
     <div class="row page-header">
-        <h1>search result page</h1>
+        <h1>搜索结果..</h1>
+        <img src="../images/猫猫观察.jpg" alt="猫猫观察">
         <h2 class="text-info">目前仅支持标题及标签相关搜索..内容搜索开发中..</h2>
         <small>猫猫老菜鸡了</small>
     </div>
     <div class="row">
         <div class="col-lg-10">
+            <% if (articleSearchResultList.length === 0) { %>
+                <h1>好像没搜到啥博客呢...要不换个关键词试试?</h1>
+                <img src="../images/猫猫疑问.jpg" alt="猫猫疑问">
+            <% } else { %>
             <table class="table table-striped">
-                <tr v-for="n in resultNumber">
-                    <td>
-                        <h2>233333</h2>
-                    </td>
+                <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        日期
+                    </th>
+                    <th>
+                        点击次数
+                    </th>
                 </tr>
+                </thead>
+                <tbody>
+                <% for (var article of articleSearchResultList) { %>
+                    <tr>
+                        <th>
+                            <h3><a class="text-info" href="/article/<%= article.id %>/detail"><%= article.title %></a>
+                            </h3>
+                        </th>
+                        <th>
+                            <h3><a href="#"><%= article.createTime %></a></h3>
+                        </th>
+                        <th>
+                            <h3><%= article.readCount %></h3>
+                        </th>
+                    </tr>
+                <% } } %>
+                </tbody>
             </table>
+            <% if (articleSearchResultList.length !== 0) { %>
+                <p>好像到底了呢..</p>
+            <% } %>
         </div>
     </div>
 </div>
 <script>
     var vm_search_result_container = new Vue({
         el: "#search-result-container",
-        data: {
-            resultNumber: 10
-        },
+        data: {},
         mounted() {
         },
         methods: {}
