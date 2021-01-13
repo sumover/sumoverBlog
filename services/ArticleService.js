@@ -153,7 +153,11 @@ module.exports = {
                 });
             }
         }
-        return articleSearchRes;
+        return articleSearchRes.sort((a, b) => {
+            if (a.readCount > b.readCount) return -1;
+            else if (a.readCount < b.readCount) return 1;
+            else return 0;
+        });
     },
     /**
      * 查询所有的标签
