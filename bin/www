@@ -4,15 +4,17 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('sumoverblog:server');
-var http = require('http');
+const app = require('../app');
+const debug = require('debug')('sumoverblog:server');
+const http = require('http');
+const AppConfig = require('../app-config');
+
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || AppConfig.port);
 app.set('port', port);
 
 /**
@@ -87,5 +89,5 @@ function onListening() {
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
-    debug(`running on http://localhost:${port}/`);
+    debug(`running on http://${AppConfig.host}:${port}/`);
 }
