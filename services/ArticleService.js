@@ -1,4 +1,3 @@
-const marked = require('marked');
 const {QueryTypes, DataTypes} = require('sequelize');
 const db = require("../db");
 const Sequelize = db.sequelize;
@@ -9,9 +8,14 @@ const LabelModel = require('../models/label')(Sequelize, DataTypes);
 const moment = require('moment');
 const crypto = require('crypto');
 const appConfig = require('../app-config');
-
+const marked = require('marked');
 
 module.exports = {
+    /**
+     * 获取文章内容的HTML文本
+     * @param aid : 文章id
+     * @returns {Promise<*|null>} : 文章的HTML文本
+     */
     fetchArticleDetail: async (aid) => {
         var articleRes = await ArticleModel.findOne({
             where: {
@@ -92,6 +96,39 @@ module.exports = {
             labelRes.push(label.labelInfo);
         }
         return labelRes;
-    }
+    },
+    queryArticleByToken: async (tokenWord) => {
+        var articleSearchRes = [];
+        for (var article of await ArticleModel.findAll()) {
+            if (article.showStatus !== "show") continue;
+            var articleTags = await LabelModel.findAll({
+                where: {
+                    articleId: article.id
+                }
+            });
+            const _match = (_tokenWord) => {
+                for (const label of articleTags) {
+                    if (label.labelInfo === _tokenWord) return true;
+                }
+                return false;
+            };
+            if (article.title.includes(tokenWord) || _match(tokenWord)) {
+                articleSearchRes.push({
+                    id: article.id,
+                    title: article.title,
+                    createTime: moment(Number(article.createTime)).format("YYYY-MM-DD"),
+                    readCount: article.readCount,
+                    tags: articleTags
+                });
+            }
+        }
+        return articleSearchRes;
+    },
+    /**
+     * 用于生成标签云
+     * @returns {Promise<void>}: 直接的HTML
+     */
+    tagCloudGenerator: async () => {
 
+    }
 }
