@@ -1,6 +1,8 @@
 //  一些初步配置
 const path = require('path');
 module.exports = {
+    host: "localhost",
+    port: "3000",
     viewPath: path.join(__dirname, "views/"),
     staticPath: path.join(__dirname, "public"),
     routerPath: path.join(__dirname, "routes"),
@@ -12,6 +14,6 @@ module.exports = {
         {url: "/article", router: "articleRouter"},
         {url: "/administrator", router: "administratorRouter"}
     ],
-    baseURL: "http://localhost:3000",
+    baseURL: `http://${this.host}:${this.port}`,
     pageLength: 10
 };
