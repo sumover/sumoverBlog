@@ -38,6 +38,7 @@ module.exports = {
         if (typeof (articleRes.articleDetail) === "undefined" || articleRes.articleDetail === null) return null;
         else return marked(articleRes.articleDetail);
     },
+
     /**
      * 获取单个文章实体
      * 文章不存在时返回"no article"
@@ -54,6 +55,13 @@ module.exports = {
         if (articleRes.length === 0) return "no article";
         else return articleRes[0];
     },
+
+    /**
+     * 获取文章列表, 范围为[(index-1)*page, index*page]
+     * @param index
+     * @param step
+     * @returns {Promise<[]>}
+     */
     queryArticleLists: async (index, step) => {
         var beginIndex = step * (index - 1);
         var endIndex = step * index;
@@ -68,10 +76,21 @@ module.exports = {
         }
         return articleList;
     },
+
+    /**
+     * 获取文章数量
+     * @returns {Promise<*>}
+     */
     getArticleLength: async () => {
         var res = await ArticleModel.count();
         return res;
     },
+
+    /**
+     * 增加文章阅读数
+     * @param articleId
+     * @returns {Promise<void>}
+     */
     articleReadPlus: async (articleId) => {
         var article = await ArticleModel.findOne({
             where: {
@@ -85,6 +104,11 @@ module.exports = {
             }
         });
     },
+    /**
+     * 获取某文章的标签列表
+     * @param articleId
+     * @returns {Promise<[]>}
+     */
     queryArticleLabelList: async (articleId) => {
         var labels = await LabelModel.findAll({
             where: {
@@ -97,6 +121,11 @@ module.exports = {
         }
         return labelRes;
     },
+    /**
+     * 搜索引擎.jpg
+     * @param tokenWord
+     * @returns {Promise<[Article]>}
+     */
     queryArticleByToken: async (tokenWord) => {
         var articleSearchRes = [];
         for (var article of await ArticleModel.findAll()) {
@@ -125,10 +154,31 @@ module.exports = {
         return articleSearchRes;
     },
     /**
-     * 用于生成标签云
-     * @returns {Promise<void>}: 直接的HTML
+     * 查询所有的标签
+     * @returns {Promise<[{
+     *     labelInfo:string
+     *     labelTimes:Number
+     * },]>}:
      */
     tagCloudGenerator: async () => {
+        var labelList = await LabelModel.findAll({
+            attributes: [
+                'labelInfo',
+                [Sequelize.fn('COUNT', Sequelize.col('labelInfo')), 'labelTimes']
+            ],
+            group: 'labelInfo',
+            order: ['labelTimes',],
+        });
+        return labelList;
+    },
+    /**
+     * 生成文章的时间轴数据结构
+     * @returns {Promise<[{
+     *     time: string,
+     *     articleList:[{article}]
+     * }]>}
+     */
+    articleTimeline: async () => {
 
     }
 }

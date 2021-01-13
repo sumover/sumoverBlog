@@ -15,6 +15,12 @@ function md5WithSalt(str1, str2) {
 }
 
 module.exports = {
+    /**
+     * 检测用户是否输入正确
+     * @param username  用户名
+     * @param password  密码
+     * @returns {Promise<string|*>} 若密码错误, 则返回"password error", 否则返回用户实体
+     */
     userCheck: async (username, password) => {
         let queryRes = await UserModel.findAll({
             where: {
@@ -25,6 +31,11 @@ module.exports = {
         if (queryRes.length === 0) return "password error";
         else return queryRes[0];
     },
+    /**
+     * 检测用户名是否存在
+     * @param username  用户名
+     * @returns {Promise<boolean>} 已存在or not
+     */
     userExist: async (username) => {
         let queryRes = await UserModel.findAll({
             where: {
@@ -33,6 +44,13 @@ module.exports = {
         });
         return (queryRes.length !== 0);
     },
+    /**
+     * 添加一个新用户
+     * @param username          用户名
+     * @param password          密码
+     * @param inviteCode        邀请码
+     * @returns {Promise<*>}    刚刚添加的用户实体
+     */
     userAdd: async (username, password, inviteCode) => {
         var res = await UserModel.create({
             username: username,
@@ -43,6 +61,11 @@ module.exports = {
         });
         return res;
     },
+    /**
+     *  检测邀请码是否正确
+     * @param inviteCode    检测的邀请码
+     * @returns {Promise<boolean>}  correct or not
+     */
     inviteCodeCheck: async (inviteCode) => {
         let inviteCodeList = await InviteCodeModel.findAll({
             where: {
@@ -51,6 +74,11 @@ module.exports = {
         });
         return inviteCodeList.length !== 0;
     },
+    /**
+     * 获取邀请码
+     * @param userId    用户id
+     * @returns {Promise<*|*[]>}    邀请码列表
+     */
     fetchInviteCode: async (userId) => {
         const today = moment().format("YYYY-MM-DD");
         var inviteCodeList = await InviteCodeModel.findAll({
@@ -80,6 +108,12 @@ module.exports = {
         }
         return inviteCodeList;
     },
+    /**
+     *更新用户最后一次更新时间
+     * @param loginUser         用户实体
+     * @param lastLoginTime     时间
+     * @returns {Promise<*>}    更新后的用户实体
+     */
     updateLastLogin: async (loginUser, lastLoginTime) => {
         loginUser.last_login_time = lastLoginTime;
         await loginUser.save();
