@@ -1,5 +1,5 @@
 <% /* 页脚 */ %>
-<% var baseURL = "http://192.168.0.102:3000" %>
+<%# var baseURL = "http://192.168.0.102:3000" %>
 
 <footer class="bs-docs-footer">
     <div class="container">
@@ -23,8 +23,47 @@
             <address>
                 <strong>sumover.cn</strong>
             </address>
-            <embed src="<%= baseURL %>/猫猫博客ico.svg" height="70" width="70">
+<!--            <embed src="<%# baseURL %>/猫猫博客ico.svg" height="70" width="70">-->
+            <embed src="https://sumoverobs.obs.cn-north-4.myhuaweicloud.com/%E7%8C%AB%E7%8C%AB%E5%8D%9A%E5%AE%A2ico.svg" height="70" width="70">
         </div>
     </div>
 
 </footer>
+<style>
+    .bs-docs-footer {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        margin-top: 100px;
+        color: #99979c;
+        text-align: center;
+        background-color: #2a2730
+    }
+
+    .bs-docs-footer a {
+        color: #fff
+    }
+
+    .bs-docs-footer-links {
+        padding-left: 0;
+        margin-bottom: 20px
+    }
+
+    .bs-docs-footer-links li {
+        display: inline-block
+    }
+
+    .bs-docs-footer-links li + li {
+        margin-left: 15px
+    }
+
+    @media (min-width: 768px) {
+        .bs-docs-footer {
+            text-align: left
+        }
+
+        .bs-docs-footer p {
+            margin-bottom: 0
+        }
+    }
+
+</style>
