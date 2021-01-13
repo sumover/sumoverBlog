@@ -3,6 +3,9 @@ var router = express.Router();
 const bodyParser = require("body-parser");
 const urlEncodeParser = bodyParser.urlencoded({extend: false});
 
+//  service import
+const articleService = require('../services/ArticleService');
+
 /* GET home page. */
 router.get('/',
     async (req, res, next) => {
@@ -31,6 +34,8 @@ router.get('/archives', urlEncodeParser,
      * @returns {Promise<void>}
      */
     async (req, res, next) => {
+        var tagCloud = await articleService.tagCloudGenerator();
+        var articleListGroupByTime = await articleService.articleTimeline();
 
         res.render('archives', {title: "archives"});
     });
