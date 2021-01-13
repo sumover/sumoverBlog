@@ -22,7 +22,9 @@
     "express-session": "^1.17.1",
     "vue": "^2.6.12",
     "sqlite3": "^5.0.0",
-    "marked": "1.2.7"
+    "marked": "1.2.7",
+    "marked-katex": "0.3.8",
+    "katex": ""
   },
   "devDependencies": {
     "mocha": "^8.2.1"
