@@ -217,5 +217,62 @@ module.exports = {
             });
         }
         return resArticleList;
+    },
+    /**
+     * 根据标签查询文章列表.
+     * @returns {Promise<[{
+     *     articleId: number,
+     *     title:string,
+     *     createTime:string
+     * }]>}
+     */
+    queryArticleByLabel: async (tag) => {
+        var articleIdListByTag = await LabelModel.findAll({
+            where: {
+                labelInfo: tag
+            }
+        });
+        var articleList = [];
+        for (var articleLabelMap of articleIdListByTag) {
+            var aid = articleLabelMap.articleId;
+            var article = await ArticleModel.findOne({where: {id: aid}});
+            if (article.showStatus !== "show") continue;
+            articleList.push({
+                articleId: aid,
+                title: article.title,
+                createTime: article.createTime
+            });
+        }
+        return articleList.sort((a, b) => {
+            if (a.createTime > b.createTime) return 1;
+            else if (a.createTime < b.createTime) return -1;
+            else return 0;
+        }).map(value => {
+            return {
+                articleId: value.articleId,
+                title: value.title,
+                createTime: moment(Number(value.createTime)).format("YYYY-MM-DD")
+            };
+        });
+    },
+    /**
+     * 根据日期查询文章列表
+     * @param _date 日期
+     * @returns {Promise<[]>} 文章列表
+     */
+    queryArticleByDate: async (_date) => {
+        var articleList = await ArticleModel.findAll();
+        var articleRes = [];
+        for (var article of articleList) {
+            if (article.showStatus !== "show") continue;
+            var createTime = moment(Number(article.createTime)).format("YYYY-MM-DD");
+            if (createTime !== _date) continue;
+            articleRes.push({
+                articleId: article.id,
+                title: article.title,
+                createTime: createTime
+            })
+        }
+        return articleRes;
     }
 }
