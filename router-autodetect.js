@@ -9,6 +9,7 @@ module.exports = (app) => {
             app.use(map.url, router);
         } catch (err) {
             console.log(`router mapping error${map.url}=>${map.router}`);
+            console.log(err);
         }
     }
 }
