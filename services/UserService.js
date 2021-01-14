@@ -1,8 +1,11 @@
 const {QueryTypes, DataTypes} = require('sequelize');
 const db = require("../db");
 const Sequelize = db.sequelize;
+//  model import
 const UserModel = require("../models/user")(Sequelize, DataTypes);
 const InviteCodeModel = require("../models/invitecode")(Sequelize, DataTypes);
+const UserRoleModel = require('../models/userrole')(Sequelize, DataTypes);
+// util import
 const moment = require('moment');
 const crypto = require('crypto');
 const appConfig = require('../app-config');
@@ -59,6 +62,10 @@ module.exports = {
             last_login_time: -1,
             invitecode: inviteCode
         });
+        await UserRoleModel.create({
+            userid: res.id,
+            role: "general user"
+        })
         return res;
     },
     /**
@@ -110,13 +117,26 @@ module.exports = {
     },
     /**
      *更新用户最后一次更新时间
-     * @param loginUser         用户实体
-     * @param lastLoginTime     时间
+     * @param loginUser : UserModel 用户实体
+     * @param lastLoginTime : Number 时间
      * @returns {Promise<*>}    更新后的用户实体
      */
     updateLastLogin: async (loginUser, lastLoginTime) => {
         loginUser.last_login_time = lastLoginTime;
         await loginUser.save();
         return loginUser;
+    },
+    /**
+     * 检查用户规则
+     * @param loginUser : UserModel
+     * @returns {Promise<string>}
+     */
+    userRole: async (loginUser) => {
+        var role = await UserRoleModel.findOne({
+            where: {
+                userid: loginUser.id
+            }
+        });
+        return role.role;
     }
 }
