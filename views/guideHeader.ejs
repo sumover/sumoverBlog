@@ -233,7 +233,7 @@
                     vm_guideHeader.loginMessage = "密码不能为空!";
                     return
                 }
-                var md5password = b64_md5(vm_guideHeader.loginPassword);
+                var md5password = md5(vm_guideHeader.loginPassword);
                 var loginRes = await axios.post('http://localhost:3000/users/login', {
                     username: vm_guideHeader.loginUsername,
                     password: md5password
@@ -259,6 +259,9 @@
                     vm_guideHeader.registerPassword.length === 0) {
                     vm_guideHeader.registerMessage = "密码呢?";
                     return
+                } else if (vm_guideHeader.registerPassword.length <= 6) {
+                    vm_guideHeader.registerMessage = "密码至少要大于六位";
+                    return
                 } else if (vm_guideHeader.registerPasswordRepeat === null ||
                     vm_guideHeader.registerPasswordRepeat.length === 0) {
                     vm_guideHeader.registerMessage = "再输一遍咯";
@@ -271,7 +274,7 @@
                     vm_guideHeader.registerMessage = "猫猫给你的邀请码呢?";
                     return
                 }
-                let md5Password = b64_md5(vm_guideHeader.registerPassword);
+                let md5Password = md5(vm_guideHeader.registerPassword);
                 var registerRes = await axios.post("/users/register", {
                     username: vm_guideHeader.registerUsername,
                     password: md5Password,
