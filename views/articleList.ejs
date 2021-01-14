@@ -15,8 +15,8 @@
                             {{ article.title }}</a>
                     </td>
                     <td class="col-md-4">
-                        <!--TODO: 根据时间分类-->
-                        <h3 class="text-info text-center"><a href="#">{{article.createTime }}</a></h3>
+                        <h3 class="text-info text-center"><a
+                                    v-bind:href="'/date?date='+article.createTime">{{article.createTime }}</a></h3>
                     </td>
                 </tr>
                 </tbody>
