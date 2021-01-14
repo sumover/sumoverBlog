@@ -15,5 +15,6 @@ module.exports = {
         {url: "/administrator", router: "administratorRouter"}
     ],
     baseURL: `http://${this.host}:${this.port}`,
-    pageLength: 10
+    pageLength: 10,
+    authtoken: "8098f688cbfbc301"
 };
