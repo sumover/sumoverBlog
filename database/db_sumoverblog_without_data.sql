@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 8.0.22)
-# Date: 2021-01-14 01:04:28
+# Date: 2021-01-14 13:56:32
 # Generator: MySQL-Front 6.0  (Build 2.20)
 
 
@@ -16,7 +16,7 @@ CREATE TABLE `article` (
   `showStatus` varchar(255) DEFAULT 'show',
   `readCount` int DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 #
 # Structure for table "comment"
@@ -30,7 +30,7 @@ CREATE TABLE `comment` (
   `content` text,
   `publishedTime` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 #
 # Structure for table "invitecode"
@@ -43,7 +43,7 @@ CREATE TABLE `invitecode` (
   `inviteBy` int NOT NULL DEFAULT '0',
   `createDate` date DEFAULT '0000-00-00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 #
 # Structure for table "label"
@@ -54,7 +54,7 @@ CREATE TABLE `label` (
   `articleId` int NOT NULL DEFAULT '0',
   `labelInfo` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`articleId`,`labelInfo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for table "user"
@@ -69,7 +69,7 @@ CREATE TABLE `user` (
   `last_login_time` varchar(20) NOT NULL DEFAULT '0',
   `invitecode` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 #
 # Structure for table "userrole"
@@ -79,4 +79,4 @@ DROP TABLE IF EXISTS `userrole`;
 CREATE TABLE `userrole` (
   `userid` int NOT NULL DEFAULT '0',
   `role` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
