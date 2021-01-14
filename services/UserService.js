@@ -10,6 +10,12 @@ const moment = require('moment');
 const crypto = require('crypto');
 const appConfig = require('../app-config');
 
+/**
+ * 把盐拉满!
+ * @param str1 拉满
+ * @param str2 拉满++
+ * @returns {string} 拉不动了...
+ */
 function md5WithSalt(str1, str2) {
     var hash = crypto.createHash('md5');
     hash.update(str1 + str2);
