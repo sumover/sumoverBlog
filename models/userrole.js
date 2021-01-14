@@ -8,14 +8,14 @@ module.exports = sequelize => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: "0",
-      primaryKey: false,
+      primaryKey: true,
       autoIncrement: false,
       comment: null,
       field: "userid"
     },
     role: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
