@@ -208,7 +208,7 @@
             fetchesInviteCodes: null
         },
         async mounted() {
-            var res = await axios.get('http://localhost:3000/users/loginStatus');
+            var res = await axios.get('/users/loginStatus');
             if (res.data.message === "user login") {
                 this.loginStatus = true;
                 this.loginUser = res.data.loginUser;
@@ -234,7 +234,7 @@
                     return
                 }
                 var md5password = md5(vm_guideHeader.loginPassword);
-                var loginRes = await axios.post('http://localhost:3000/users/login', {
+                var loginRes = await axios.post('/users/login', {
                     username: vm_guideHeader.loginUsername,
                     password: md5password
                 });
