@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "pm2 start pm.config.json",
+    "stop": "pm2 stop pm.config.json",
     "sequelized-automated": "sequelize-automate -c sequelized-automated.config.json"
   },
   "dependencies": {
@@ -23,7 +24,9 @@
     "vue": "^2.6.12",
     "marked": "1.2.7",
     "marked-katex": "0.3.8",
-    "katex": ""
+    "katex": "",
+    "helmet": "2.1.3",
+    "pm2": ""
   },
   "devDependencies": {
     "mocha": "^8.2.1"

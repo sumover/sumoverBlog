@@ -5,11 +5,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
 const appConfig = require('./app-config');
+const helmet = require('helmet');
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 
 var app = express();
+
+app.use(helmet());
 
 // view engine setup
 app.set('views', appConfig.viewPath);

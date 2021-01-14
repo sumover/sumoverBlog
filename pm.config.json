@@ -1,0 +1,17 @@
+{
+  "apps": [
+    {
+      "name": "sumoverBlog",
+      "script": "bin/www",
+      "watch": "../",
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "error_file": "./log/err.log",
+      "out_file": "./log/out.log",
+      "log_file": "./log/combined.log",
+      "time": true
+    }
+  ]
+}
