@@ -197,6 +197,7 @@ module.exports = {
                 ['createTime', 'DESC'],
             ]
         });
+        if (articleListOrigin.length === 0) return [];
         var resArticleList = [];
         resArticleList.push({
             time: moment(Number(articleListOrigin[0].createTime)).format("YYYY-MM-DD"),
