@@ -173,6 +173,8 @@ module.exports = {
                 [Sequelize.fn('COUNT', Sequelize.col('labelInfo')), 'labelTimes']
             ],
             group: 'labelInfo'
+        }).catch(err => {
+            console.log(err);
         });
 
         return labelList.sort((l1, l2) => {
@@ -241,6 +243,7 @@ module.exports = {
         for (var articleLabelMap of articleIdListByTag) {
             var aid = articleLabelMap.articleId;
             var article = await ArticleModel.findOne({where: {id: aid}});
+            if (article === null) continue;
             if (article.showStatus !== "show") continue;
             articleList.push({
                 articleId: aid,
