@@ -1,0 +1,151 @@
+<%- include header.ejs %>
+
+<html>
+<body>
+<%- include guideHeader.ejs %>
+<div id="upload-article-container" class="container" role="main">
+    <div class="row">
+        <div class="col-lg-10">
+            <form class="form-horizontal" role="form">
+                <!--标题-->
+                <div class="form-group">
+                    <label for="upload-article-title"></label>
+                    <input id="upload-article-title"
+                           placeholder="起个正儿八经的标题"
+                           v-model="upload_article_title"/>
+                    <p class="page-header"></p>
+                </div>
+                <!--正文-->
+                <div class="form-group">
+                    <label for="upload-article-content">正文</label>
+                    <textarea id="upload-article-content" placeholder="粘贴Markdown"
+                              v-model="upload_article_content"></textarea>
+                    <p class="page-header"></p>
+                </div>
+                <!--提交按钮-->
+                <div class="form-group page-header">
+                    <p>
+                        图床说明:
+                    </p>
+                    一般建议两种办法:<br>
+                    1. 放在本地的images, 基础url为<code>../../../images/</code><br>
+                    2. 找个OSS然后直接把url丢进去(推荐)<br>
+                    <button type="button" class="btn btn-lg btn-primary" @click="public">提交</button>
+                    <a id="modal-352649" href="#modal-container-352649" role="button" class="btn btn-lg btn-default"
+                       data-toggle="modal" @click="pre_render">预览</a>
+                </div>
+                <!--标签-->
+                <div>
+                    <div class="jumbotron col-lg-9">
+                        <template v-if="article_tag_list.length !==0">
+                            |
+                        </template>
+                        <template v-for="tag in article_tag_list">
+                            <h3 class="label label-info">
+                                {{tag}}
+                            </h3>|
+                        </template>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="text-tag-added">
+                        </label>
+                        <input id="text-tag-added" class="form-control " type="text"
+                               v-model="article_tag_tobe_added">
+                        <button class="btn btn-primary" type="button" @click="addTag" style="width: 100%;">添加一个标签
+                        </button>
+                    </div>
+                </div>
+                <!--预览用模态框-->
+                <div class="modal fade" id="modal-container-352649" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h1 class="modal-title" id="myModalLabel">
+                                    {{ upload_article_title }}
+                                </h1>
+                                <p>
+                                    <abbr>标签</abbr>
+                                    <template v-if="article_tag_list.length!==0">|</template>
+                                    <template v-for="tag in article_tag_list">
+                                        <a class="label label-info">{{tag}}</a>
+                                    </template>
+                                </p>
+                                <br>
+                                <h5>
+                                    0000-00-00
+                                </h5>
+                            </div>
+                            <div class="modal-body" v-html="article_pre_rendered">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" @click="public">提交</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include pagefoot.ejs %>
+<style>
+    #upload-article-title {
+        width: 100%;
+        height: 3ex;
+        resize: none;
+        font-size: 30px;
+
+    }
+
+    #upload-article-content {
+        width: 100%;
+        height: 50em;
+        resize: none;
+        font-size: 10px;
+    }
+</style>
+<script>
+    var vm_upload_article_container = new Vue({
+        el: "#upload-article-container",
+        data: {
+            upload_article_title: null,
+            upload_article_content: null,
+            article_tag_tobe_added: null,
+            article_tag_list: [],
+            article_pre_rendered: null
+        },
+        async mounted() {
+        },
+        methods: {
+            addTag: () => {
+                vm_upload_article_container.article_tag_tobe_added = vm_upload_article_container.article_tag_tobe_added.trim();
+                if (vm_upload_article_container.article_tag_tobe_added === "") return
+                vm_upload_article_container.article_tag_list.push(vm_upload_article_container.article_tag_tobe_added);
+                vm_upload_article_container.article_tag_tobe_added = "";
+            },
+            pre_render: async () => {
+                var renderRes = await axios.post('/administrator/preRender', {
+                    markdown_text: vm_upload_article_container.upload_article_content
+                });
+                vm_upload_article_container.article_pre_rendered = renderRes.data;
+            },
+            public: async () => {
+                var publicRes = await axios.post('/administrator/public', {
+                    title: vm_upload_article_container.upload_article_title,
+                    content: vm_upload_article_container.upload_article_content,
+                    labels: vm_upload_article_container.article_tag_list
+                });
+                location.reload();
+            }
+
+        }
+    });
+</script>
+
+</body>
+</html>
