@@ -31,8 +31,8 @@
                     1. 放在本地的images, 基础url为<code>../../../images/</code><br>
                     2. 找个OSS然后直接把url丢进去(推荐)<br>
                     <button type="button" class="btn btn-lg btn-primary" @click="public">提交</button>
-                    <a id="modal-352649" href="#modal-container-352649" role="button" class="btn btn-lg btn-default"
-                       data-toggle="modal" @click="pre_render">预览</a>
+                    <%# 暂时不可用<a id="modal-352649" href="#modal-container-352649" role="button" class="btn btn-lg btn-default"
+                       data-toggle="modal" @click="pre_render">预览</a>%>
                 </div>
                 <!--标签-->
                 <div>
@@ -74,7 +74,7 @@
                                 </p>
                                 <br>
                                 <h5>
-                                    0000-00-00
+                                    {{article_public_time}}
                                 </h5>
                             </div>
                             <div class="modal-body" v-html="article_pre_rendered">
@@ -117,7 +117,8 @@
             upload_article_content: null,
             article_tag_tobe_added: null,
             article_tag_list: [],
-            article_pre_rendered: null
+            article_pre_rendered: null,
+            article_public_time: null
         },
         async mounted() {
         },
@@ -132,15 +133,18 @@
                 var renderRes = await axios.post('/administrator/preRender', {
                     markdown_text: vm_upload_article_container.upload_article_content
                 });
-                vm_upload_article_container.article_pre_rendered = renderRes.data;
+                if (renderRes.data.message === "render success") {
+                    vm_upload_article_container.article_pre_rendered = renderRes.data.renderRes;
+                    vm_upload_article_container.article_public_time = renderRes.data.curTime;
+                }
             },
             public: async () => {
-                var publicRes = await axios.post('/administrator/public', {
+                var publicRes = await axios.post('/administrator/publish', {
                     title: vm_upload_article_container.upload_article_title,
                     content: vm_upload_article_container.upload_article_content,
                     labels: vm_upload_article_container.article_tag_list
                 });
-                location.reload();
+                if (publicRes.data.message === "publish success") window.location = `/article/${publicRes.data.id}/detail`;
             }
 
         }
