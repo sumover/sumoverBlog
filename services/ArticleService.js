@@ -27,13 +27,13 @@ module.exports = {
         marked.setOptions({
             renderer: new marked.Renderer(),
             headerIds: true,
-            gfm: false,
+            gfm: true,
             tables: true,
-            breaks: false,
+            breaks: true,
             mangle: true,
             pedantic: false,
             sanitize: false,
-            smartLists: false,
+            smartLists: true,
             smartypants: false,
             kaTex: katex
         });
