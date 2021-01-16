@@ -96,7 +96,6 @@ router.get('/articleList', urlEncodeParser,
         for (var index in articleList) {
             articleList[index].articleDetail = "预览页面暂时不予显示";
             articleList[index].createTime = moment(Number(articleList[index].createTime)).format("YYYY-MM-DD");
-
         }
         res.json({
             message: "query success",
