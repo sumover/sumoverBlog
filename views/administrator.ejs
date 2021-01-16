@@ -4,7 +4,7 @@
 <body>
 <%- include guideHeader.ejs %>
 
-<div class="container" role="main">
+<div id="admin-container" class="container" role="main">
     <div class="row">
         <h3 class=" page-header">
             <a class="text-info" href="/administrator/uploadArticle">快速发布>></a>
@@ -21,11 +21,18 @@
                 <th>id</th>
                 <th>name</th>
                 <th>上次登录时间</th>
+                <th>注册时间</th>
                 <th>邀请人</th>
             </tr>
             </thead>
             <tbody>
-
+            <tr v-for="user of userList">
+                <th>{{user.id}}</th>
+                <th>{{user.username}}</th>
+                <th>{{user.lastLoginTime}}</th>
+                <th>{{user.registerTime}}</th>
+                <th>{{user.invitedBy}}</th>
+            </tr>
             </tbody>
         </table>
         <h1 class="page-header text-info">
@@ -46,7 +53,16 @@
             </tr>
             </thead>
             <tbody>
-
+            <tr v-for="(article,index) of articleList">
+                <th>{{article.id}}</th>
+                <th><a v-bind:href="'article/'+article.id+'/detail'">{{article.title}}</a></th>
+                <th>{{article.publishedTime}}</th>
+                <th>
+                    <a v-bind:class="article.status==='show'?'label label-primary':'label label-default'"
+                       @click="articleStatusSwitch(index)">{{article.status}}</a>
+                </th>
+                <th>{{article.readCount}}</th>
+            </tr>
             </tbody>
         </table>
         <h1 class="page-header text-info">
@@ -59,19 +75,58 @@
             <thead>
             <tr>
                 <th>id</th>
-                <th>对应的文章</th>
-                <th>对应的文章的id</th>
+                <th>所在文章</th>
+                <th>文章id</th>
                 <th>评论人</th>
                 <th>具体内容</th>
                 <th>评论时间</th>
+                <th>夹之</th>
             </tr>
             </thead>
             <tbody>
-
+            <tr v-for="comment of commentList">
+                <th>{{comment.id}}</th>
+                <th>
+                    <a v-bind:href="`/article/${comment.articleId}/detail`">{{comment.articleTitle}}</a>
+                </th>
+                <th>{{comment.articleId}}</th>
+                <th>{{comment.publishUser}}</th>
+                <th>{{comment.detail.length > 10 ? comment.detail.substr(0, 10) + ".." : comment.detail}}</th>
+                <th>{{comment.publishedTime}}</th>
+                <th>
+                    <button>x</button>
+                </th>
+            </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    var vm_admin = new Vue({
+        el: "#admin-container",
+        data: {
+            userList: null,
+            commentList: null,
+            articleList: null
+        },
+        async mounted() {
+            var userListRes = await axios.get('/administrator/allUser');
+            var articleListRes = await axios.get('/administrator/allArticle');
+            var commentListRes = await axios.get('/administrator/allComment');
+            if (userListRes.data.message === "fetch all user success") this.userList = userListRes.data.allUserList;
+            if (articleListRes.data.message === "fetch all article success") this.articleList = articleListRes.data.articleList;
+            if (commentListRes.data.message === "fetch all comment success") this.commentList = commentListRes.data.commentList;
+        },
+        methods: {
+            articleStatusSwitch: async (index) => {
+                var articleUpdatedRes = await axios.post('/administrator/articleStatusSwitch', {aid: vm_admin.articleList[index].id});
+                if (articleUpdatedRes.data.message === 'article show status change') vm_admin.$set(vm_admin.articleList, index, articleUpdatedRes.data.article);
+            },
+        }
+
+    })
+</script>
 
 <%- include pagefoot.ejs %>
 </body>
