@@ -21,6 +21,9 @@ const katex = require('katex');
 
 /**
  * 使用闭包构造的一个装饰器
+ *
+ * 在用户未登录或者用户并不是admin的时候, 强制跳转到主页面
+ *
  * @param handler url handler
  * @returns async function(req, res, next): Promise<undefined>
  * @constructor
@@ -39,6 +42,30 @@ function ForcedJump(handler) {
     }
 }
 
+/**
+ * 使用闭包构造的一个装饰器
+ *
+ * 在用户未登录或者用户并不是admin时, 阻止ajax行为
+ * @param handler
+ * @returns {function(*=, *=, *=): Promise<undefined>}
+ * @constructor
+ */
+function ForcedJumpAJAX(handler) {
+    return async (req, res, next) => {
+        var loginUser = req.session.loginUser;
+        if (loginUser === undefined || loginUser === null) {
+            res.redirect('/');
+            return
+        }
+        const userRole = await userService.userRole(loginUser);
+        if (userRole !== "admin") {
+            res.json({
+                message: "role error"
+            });
+        } else handler(req, res, next);
+    }
+}
+
 router.get('/', urlEncodeParser, ForcedJump(
     /**
      * 管理员主页面
@@ -48,14 +75,75 @@ router.get('/', urlEncodeParser, ForcedJump(
      * @returns {Promise<void>}
      */
     async (req, res, next) => {
-        //todo
-        var userList = await adminService.getAllUser();
-        var articleList = await adminService.getAllArticle();
         res.render('administrator', {
             title: 'admin management'
         });
     })
 );
+
+router.get('/allUser', urlEncodeParser, ForcedJumpAJAX(
+    /**
+     * TODO 把所有的用户索引到页面
+     *
+     * |id|name|lastLoginTime|InvitedBy|
+     *
+     * @AJAX
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async (req, res, next) => {
+        var allUserList = await adminService.getAllUser();
+        res.json({
+            message: "fetch all user success",
+            allUserList: allUserList
+        })
+    })
+);
+
+router.get('/allArticle', urlEncodeParser, ForcedJumpAJAX(
+    /**
+     * TODO 把所有的文章整到页面内
+     *
+     * |id|title|publishedTime|status|readCount|
+     *
+     * @AJAX
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async (req, res, next) => {
+        var allArticleList = await adminService.getAllArticle();
+        res.json({
+            message: "fetch all article success",
+            articleList: allArticleList
+        })
+    }
+));
+
+router.get('/allComment', urlEncodeParser, ForcedJumpAJAX(
+    /**
+     * TODO 把所有的评论都整过去
+     *
+     * |id|articleId|articleTitle|publicUser|detail|publishedTime|
+     *
+     * @AJAX
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async (req, res, next) => {
+        var allComment = await adminService.getAllComment();
+
+        res.json({
+            message: "fetch all comment success",
+            commentList: allComment
+        });
+    }
+));
 
 router.get('/uploadArticle', urlEncodeParser, ForcedJump(
     /**
@@ -123,4 +211,16 @@ router.post('/publish', urlEncodeParser, ForcedJump(
         })
     })
 );
+router.post('/articleStatusSwitch', urlEncodeParser, ForcedJumpAJAX(
+    async (req, res, next) => {
+        var aid = req.body.aid;
+        var articleUpdated = await adminService.changeStatus(aid);
+
+        res.json({
+            message: "article show status change",
+            article: articleUpdated
+        })
+    }
+));
+
 module.exports = router;
