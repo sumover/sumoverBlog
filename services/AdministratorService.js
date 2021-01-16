@@ -100,8 +100,8 @@ module.exports = {
     getAllComment: async () => {
         // |id|articleId|articleTitle|publicUser|detail|publishedTime|
         var allCommentList = await CommentModel.findAll({
-            order:[
-                ['publishedTime','DESC']
+            order: [
+                ['publishedTime', 'DESC']
             ]
         });
         var commentRes = [];
@@ -145,5 +145,8 @@ module.exports = {
             status: article.showStatus,
             readCount: article.readCount
         };
+    },
+    deleteComment: async (cid) => {
+        await CommentModel.destroy({where: {Id: cid}});
     }
 }

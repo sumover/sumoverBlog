@@ -223,4 +223,11 @@ router.post('/articleStatusSwitch', urlEncodeParser, ForcedJumpAJAX(
     }
 ));
 
+router.post('/deleteComment', urlEncodeParser, ForcedJumpAJAX(
+    async (req, res, next) => {
+        var cid = req.body.id;
+        await adminService.deleteComment(cid);
+    }
+));
+
 module.exports = router;
