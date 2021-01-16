@@ -27,7 +27,7 @@
 
     <div class="container" id="container-article-detail">
         <%# 文章头 %>
-        <div class="row">
+        <div id="article-header" class="row">
             <div class="col-lg-1">
 
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <%# 文章主体 %>
-        <div class="row page-header" id="page-header-row">
+        <div id="article-content" class="row page-header">
             <div class="col-lg-1">
                 <!--<%#TODO:侧边导航 %>-->
             </div>
@@ -55,65 +55,69 @@
             </div>
         </div>
 
-        <%# 文章评论板块 %>
-        <div class="row page-header">
-            <div class="col-lg-1">
-                <h5 class="text-primary">
-                    评论({{articleCommentList.length}})
-                </h5>
-            </div>
-            <div class="col-lg-8 center-block">
+        <div id="comment">
+
+            <%# 文章评论板块 %>
+            <div id="article-comment" class="row page-header">
+                <div class="col-lg-1">
+                    <h5 class="text-primary">
+                        评论({{articleCommentList.length}})
+                    </h5>
+                </div>
+                <div class="col-lg-8 center-block">
                 <textarea id="comment-textarea" placeholder="<%= loginStatus ? "发表一个友善的评论~" : "好像还没登录哦~" %>"
                       <%= !loginStatus ? "disabled" : "" %> v-model="commentContentPublished">
 
             </textarea>
-            </div>
-            <div class="col-lg-1">
-                <button class="btn btn-lg btn-primary" id="btn-publish"
-                        style="height: 6em;width: 6em;"
-                        <%= !loginStatus ? "disabled" : "" %>
-                        @click="publishComment"
-                        data-toggle="tooltip"
-                        title="你还没有评论(´･_･`)"
-                        data-placement="top">
+                </div>
+                <div class="col-lg-1">
+                    <button class="btn btn-lg btn-primary" id="btn-publish"
+                            style="height: 6em;width: 6em;"
+                            <%= !loginStatus ? "disabled" : "" %>
+                            @click="publishComment"
+                            data-toggle="tooltip"
+                            title="你还没有评论(´･_･`)"
+                            data-placement="top">
 
-                    <%- !loginStatus ? "先登录嘛" : "发表<br>评论" %>
-                </button>
+                        <%- !loginStatus ? "先登录嘛" : "发表<br>评论" %>
+                    </button>
+                </div>
             </div>
-        </div>
-        <%# 盖楼.jpg %>
-        <div class="row">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-8">
-                <template v-if="articleCommentList.length === 0">
-                    <div class="text-center">
-                        好像还没有评论呢...
-                    </div>
-                </template>
-                <div class="panel panel-default" v-for="(comment, index) in articleCommentList">
-                    <div class="panel-heading" v-bind:id="'panel-head-' + index">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <p class="text-left text-primary">
-                                    {{ comment.publisher }}
-                                </p>
-                            </div>
-                            <div class="col-lg-4">
-                                <p class="text-right">
-                                    评论于:{{ comment.publishedTime }}
-                                </p>
-                            </div>
-                            <div class="col-lg-4">
-                                #{{ index + 1 }}
+            <%# 盖楼.jpg %>
+            <div id="article-comment-list" class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-8">
+                    <template v-if="articleCommentList.length === 0">
+                        <div class="text-center">
+                            好像还没有评论呢...
+                        </div>
+                    </template>
+                    <div class="panel panel-default" v-for="(comment, index) in articleCommentList">
+                        <div class="panel-heading" v-bind:id="'panel-head-' + index">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <p class="text-left text-primary">
+                                        {{ comment.publisher }}
+                                    </p>
+                                </div>
+                                <div class="col-lg-4">
+                                    <p class="text-right">
+                                        评论于:{{ comment.publishedTime }}
+                                    </p>
+                                </div>
+                                <div class="col-lg-4">
+                                    #{{ index + 1 }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel-body">
-                        {{ comment.content }}
+                        <div class="panel-body">
+                            {{ comment.content }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <%#显示图片用的模态框%>
         <div class="modal fade" id="img-modal"
              aria-hidden="true">
@@ -138,15 +142,18 @@
             resize: none;
         }
 
+        img {
+            width: 50%;
+            height: 50%;
+        }
+
     </style>
     <script>
-        var vm_article_detail_container = new Vue({
-            el: "#container-article-detail",
+        var vm_article_header = new Vue({
+            el: "#article-header",
             data: {
                 articleId: "<%= articleId %>",
-                articleLabelList: null,
-                articleCommentList: [],
-                commentContentPublished: null
+                articleLabelList: null
             },
             async mounted() {
                 // query labels
@@ -158,6 +165,33 @@
                     this.articleLabelList = articleLabelListRes.data.articleLabelList;
                 else this.articleLabelList = [];
 
+                $('img').each((index, element) => {
+                    element.id = `img-id-${index}`;
+                    element.class = "img-responsive center-block"
+
+                    element.onclick = function () {
+                        console.log('show modal');
+                        $('#img-modal').modal('show');
+                        $('#img-modal-body').html(
+                            `<img class="img-responsive center-block" src="${element.src}" alt=${element.alt}> `);
+                        $('#img-modal-footer').text(element.alt);
+                    };
+                    console.log(`img ${index} catch from ${element.src}`);
+                    $('table').addClass('table table-bordered table-hover');
+                    // var inHTML = $(this).html();
+                    // $(this).attr('onclick', `showModal(${inHTML})`)
+                });
+            }
+        })
+
+        var vm_comment = new Vue({
+            el: "#comment",
+            data: {
+                articleCommentList: [],
+                commentContentPublished: null,
+                articleId: "<%= articleId %>",
+            },
+            async mounted() {
                 // query comments
                 var articleCommentListRes = await axios.get('/article/articleComments', {
                     params: {aid: this.articleId}
@@ -165,6 +199,36 @@
                 if (articleCommentListRes.data.message === "query comment success") {
                     this.articleCommentList = articleCommentListRes.data.commentList;
                 }
+            },
+            methods: {
+                publishComment: async () => {
+                    if (vm_comment.commentContentPublished === null ||
+                        vm_comment.commentContentPublished === "") {
+                        $('#btn-publish').tooltip();
+                        return
+                    }
+                    var commentRes = await axios.post('/article/publishComment', {
+                        commentContent: vm_comment.commentContentPublished,
+                        articleId: vm_comment.articleId
+                    });
+                    if (commentRes.data.message === "comment published success") {
+                        vm_comment.articleCommentList.push(commentRes.data.commentCreated);
+                        vm_comment.commentContentPublished = null;
+                    }
+                }
+            }
+        });
+
+
+        /*var vm_article_detail_container = new Vue({
+            el: "#container-article-detail",
+            data: {
+                articleLabelList: null,
+                articleCommentList: [],
+                commentContentPublished: null
+            },
+            async mounted() {
+
 
                 //  jQuery operation
                 $('img').each((index, element) => {
@@ -184,7 +248,7 @@
                     // var inHTML = $(this).html();
                     // $(this).attr('onclick', `showModal(${inHTML})`)
                 });
-                //  TODO: 捕获$$并使用katex渲染.
+                //  捕获$$并使用katex渲染.
                 //  katex
                 $('code').filter('.language-math').each((index, element) => {
                     console.log(`render math latex code ${element.innerText}`);
@@ -209,7 +273,7 @@
                     }
                 }
             }
-        });
+        });*/
     </script>
 
 <% } %>
