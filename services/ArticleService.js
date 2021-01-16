@@ -11,6 +11,28 @@ const appConfig = require('../app-config');
 const marked = require('marked-katex');
 const katex = require('katex');
 
+/**
+ * 空标签清除
+ * @returns {Promise<void>}
+ */
+async function tagClear() {
+    var labels = await LabelModel.findAll();
+    for (const label of labels) {
+        var article = await ArticleModel.findOne({
+            where: {
+                id: label.articleId
+            }
+        });
+        if (article === null) {
+            LabelModel.destroy({
+                where: {
+                    articleId: label.articleId
+                }
+            });
+        }
+    }
+}
+
 module.exports = {
     /**
      * 获取文章内容的HTML文本
@@ -59,7 +81,7 @@ module.exports = {
     },
 
     /**
-     * 获取文章列表, 范围为[(index-1)*page, index*page]
+     * 获取文章列表, 范围为[(index-1)\*page, index*page]
      * @param index
      * @param step
      * @returns {Promise<[article]>}
@@ -68,7 +90,7 @@ module.exports = {
         var beginIndex = step * (index - 1);
         var endIndex = step * index;
         var articleListRes = await ArticleModel.findAll({
-            order: ['createTime']
+            order: [['createTime', 'DESC']]
         });
 
         var articleList = [];
@@ -84,7 +106,7 @@ module.exports = {
      * @returns {Promise<Number>}
      */
     getArticleLength: async () => {
-        var res = await ArticleModel.count();
+        var res = await ArticleModel.count({where: {showStatus: "show"}});
         return res;
     },
 
@@ -160,13 +182,18 @@ module.exports = {
         });
     },
     /**
-     * 查询所有的标签
+     *
+     * 生成标签云, 并按照频率排序
+     *
+     *  顺便把所有没有对应文章的标签给删掉
+     *
      * @returns {Promise<[{
      *     labelInfo:string
      *     labelTimes:Number
      * },]>}:
      */
     tagCloudGenerator: async () => {
+        await tagClear();
         var labelList = await LabelModel.findAll({
             attributes: [
                 'labelInfo',
@@ -176,7 +203,6 @@ module.exports = {
         }).catch(err => {
             console.log(err);
         });
-
         return labelList.sort((l1, l2) => {
             if (l1.labelTimes > l2.labelTimes) return -1;
             else if (l1.labelTimes < l2.labelTimes) return 1;
