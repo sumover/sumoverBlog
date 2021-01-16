@@ -55,7 +55,7 @@
             <tbody>
             <tr v-for="(article,index) of articleList">
                 <th>{{article.id}}</th>
-                <th><a v-bind:href="'article/'+article.id+'/detail'">{{article.title}}</a></th>
+                <th><a v-bind:href="'/article/'+article.id+'/detail'">{{article.title}}</a></th>
                 <th>{{article.publishedTime}}</th>
                 <th>
                     <a v-bind:class="article.status==='show'?'label label-primary':'label label-default'"
@@ -84,7 +84,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="comment of commentList">
+            <tr v-for="(comment,index) of commentList">
                 <th>{{comment.id}}</th>
                 <th>
                     <a v-bind:href="`/article/${comment.articleId}/detail`">{{comment.articleTitle}}</a>
@@ -94,7 +94,7 @@
                 <th>{{comment.detail.length > 10 ? comment.detail.substr(0, 10) + ".." : comment.detail}}</th>
                 <th>{{comment.publishedTime}}</th>
                 <th>
-                    <button>x</button>
+                    <button @click="deleteComment(index)">x</button>
                 </th>
             </tr>
             </tbody>
@@ -122,10 +122,14 @@
             articleStatusSwitch: async (index) => {
                 var articleUpdatedRes = await axios.post('/administrator/articleStatusSwitch', {aid: vm_admin.articleList[index].id});
                 if (articleUpdatedRes.data.message === 'article show status change') vm_admin.$set(vm_admin.articleList, index, articleUpdatedRes.data.article);
-            },
+            }, deleteComment: async (index) => {
+                axios.post('/administrator/deleteComment', {
+                    id: vm_admin.commentList[index].id
+                });
+                vm_admin.commentList.splice(index, 1);
+            }
         }
-
-    })
+    });
 </script>
 
 <%- include pagefoot.ejs %>
