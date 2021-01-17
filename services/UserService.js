@@ -143,6 +143,6 @@ module.exports = {
                 userid: loginUser.id
             }
         });
-        return role.role;
+        return role.role === null ? "general" : role.role;
     }
 }

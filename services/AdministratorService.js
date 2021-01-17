@@ -61,7 +61,7 @@ module.exports = {
                 username: user.username,
                 lastLoginTime: moment(Number(user.last_login_time)).format("YYYY-MM-DD HH:mm:ss"),
                 registerTime: moment(Number(user.register_time)).format("YYYY-MM-DD HH:mm:ss"),
-                invitedBy: inviter.username
+                invitedBy: inviter.username === null ? "no inviter" : inviter.username
             });
         }
         return ListRes;
