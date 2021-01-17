@@ -1,18 +1,146 @@
 <%- include header.ejs %>
+<link rel="stylesheet" href="/animate/animate.min.css">
 <html>
 <body>
 <%- include guideHeader.ejs %>
-<div class="container" role="main">
-    <h1 class="text-primary text-center">猫猫博客alpha版</h1>
-    <h3>好耶!</h3>
-    <p>我先在这放个猫猫</p>
-    <img src="/images/serena.jpg" height="300" wight="300"/>
-
-    <iframe src="//player.bilibili.com/player.html?aid=25470745&bvid=BV1Es411L7Jn&cid=43333790&page=1" scrolling="no"
-            border="0" frameborder="no" framespacing="0" allowfullscreen="true"
-            width="854" height="480"></iframe>
-
+<div id="index-container" class="container wrap" role="main">
+    <h1 id="index-title" class="text-primary text-center animate__animated">猫猫博客alpha版</h1>
+    <h1 class="text-primary text-center animate__animated animate__fadeIn animate__delay-4s">qwq</h1>
+    <img class="center-block animate__animated" src="/images/猫猫奔跑.jpg" id="neko-run">
+    <img class="center-block" src="/images/猫猫登场.jpg" id="neko-onStage">
 </div>
+
+<style>
+    #index-title {
+        animation-name: rotateIn;
+        animation-duration: 1s;
+        animation-delay: 3s;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+    }
+
+    #neko-run {
+        animation-name: nekoRun;
+        animation-duration: 2s;
+        animation-delay: 0s;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+    }
+
+    #neko-onStage {
+        animation-name: nekoOnStage;
+        animation-duration: 2s;
+        animation-delay: 2s;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+    }
+
+    @keyframes nekoRun {
+        from,
+        40%,
+        50%,
+        60%,
+        75%,
+        to {
+            -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        from {
+            opacity: 0;
+            -webkit-transform: translate3d(400px, 0, 0) scaleX(3);
+            transform: translate3d(400px, 0, 0) scaleX(3);
+        }
+
+        40% {
+            opacity: 1;
+            -webkit-transform: translate3d(-25px, 0, 0) scaleX(1);
+            transform: translate3d(-25px, 0, 0) scaleX(1);
+        }
+
+        50% {
+            -webkit-transform: translate3d(10px, 0, 0) scaleX(0.98);
+            transform: translate3d(10px, 0, 0) scaleX(0.98);
+        }
+
+        60% {
+            -webkit-transform: translate3d(-5px, 0, 0) scaleX(0.995);
+            transform: translate3d(-5px, 0, 0) scaleX(0.995);
+        }
+
+        75% {
+            opacity: 1;
+            -webkit-transform: translate3d(20px, 0, 0) scaleX(0.9);
+            transform: translate3d(20px, 0, 0) scaleX(0.9);
+        }
+
+        to {
+            opacity: 0;
+            -webkit-transform: translate3d(-600px, 0, 0) scaleX(2);
+            transform: translate3d(-600px, 0, 0) scaleX(2);
+        }
+    }
+
+    @keyframes nekoOnStage {
+        from,
+        20%,
+        40%,
+        60%,
+        80%,
+        to {
+            -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        0% {
+            opacity: 0;
+            -webkit-transform: scale3d(0.3, 0.3, 0.3);
+            transform: scale3d(0.3, 0.3, 0.3);
+        }
+
+        20% {
+            -webkit-transform: scale3d(1.1, 1.1, 1.1);
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+
+        40% {
+            -webkit-transform: scale3d(0.9, 0.9, 0.9);
+            transform: scale3d(0.9, 0.9, 0.9);
+        }
+
+        60% {
+            opacity: 1;
+            -webkit-transform: scale3d(1.03, 1.03, 1.03);
+            transform: scale3d(1.03, 1.03, 1.03);
+        }
+
+        80% {
+            -webkit-transform: scale3d(0.97, 0.97, 0.97);
+            transform: scale3d(0.97, 0.97, 0.97);
+        }
+
+        to {
+            opacity: 1;
+            -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+        }
+    }
+
+    @keyframes rotateIn {
+        from {
+            -webkit-transform: rotate3d(0, 0, 1, -100deg);
+            transform: rotate3d(0, 0, 1, -100deg);
+            opacity: 0;
+        }
+
+        to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+    }
+</style>
+
 <%- include pagefoot.ejs %>
 </body>
 </html>
