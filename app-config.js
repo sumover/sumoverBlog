@@ -16,5 +16,4 @@ module.exports = {
     ],
     baseURL: `http://${this.host}:${this.port}`,
     pageLength: 10,
-    authtoken: "8098f688cbfbc301"
 };
