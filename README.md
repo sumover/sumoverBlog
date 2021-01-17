@@ -110,3 +110,9 @@ TODOList:
 
 1. 部署
 2. index页面设计
+
+### FINISHED list
+
+1. 部署完成[猫猫的猫窝](http://www.sumover.cn)
+2. 设计了开始界面的动画
+

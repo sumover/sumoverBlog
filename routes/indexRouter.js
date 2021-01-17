@@ -10,7 +10,7 @@ const articleService = require('../services/ArticleService');
 router.get('/',
     async (req, res, next) => {
         res.render('index', {
-            title: '猫窝大门',
+            title: '猫猫的猫窝',
             isIndex: true
         });
     });
