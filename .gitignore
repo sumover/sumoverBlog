@@ -1,3 +1,4 @@
 /db-config.js
-/.idea/
+/.idea
 *.iml
+/node_modules
