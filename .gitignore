@@ -1,4 +1,6 @@
 /db-config.js
+/natapp.exe
 /.idea
 *.iml
 /node_modules
+/database
