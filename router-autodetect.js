@@ -12,4 +12,5 @@ module.exports = (app) => {
             console.log(err);
         }
     }
+    console.log("router mapping config success");
 }

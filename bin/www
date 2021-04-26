@@ -88,6 +88,6 @@ function onListening() {
     var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + bind);
-    debug(`running on http://${AppConfig.host}:${port}/`);
+    console.log('Listening on ' + bind);
+    console.log(`running on http://${AppConfig.host}:${port}/`);
 }

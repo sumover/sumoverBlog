@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start pm.config.json",
+    "start": "node bin/www",
     "stop": "pm2 stop pm.config.json",
     "sequelized-automated": "sequelize-automate -c sequelized-automated.config.json"
   },
