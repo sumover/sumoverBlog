@@ -32,6 +32,31 @@
                     <button type="submit" class="btn btn-primary">猫猫搜索</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ovo
+                            <strong class="caret"></strong></a>
+                        <ul class="dropdown-menu">
+                            <template v-if="loginStatus">
+                                <li>
+                                    <a href="#modal-container-invite-code" data-toggle="modal">生成邀请码</a>
+                                </li>
+                            </template>
+                            <template v-else>
+                                <li>
+                                    <a>加入猫窝</a>
+                                </li>
+                            </template>
+                            <template v-if="loginStatus">
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="/users/logout">退出猫窝</a>
+                                </li>
+                            </template>
+                        </ul>
+                    </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <template v-if="!loginStatus">
                         <li>
                             <a class="navbar-brand" id="modal-288059" href="#modal-container-288059"
@@ -47,31 +72,8 @@
                     <li class="<%= typeof (isAbout) !== "undefined" ? "active" : "" %>">
                         <a class="navbar-brand" href="/about">about</a>
                     </li>
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ovo<strong
-                                    class="caret"></strong></a>
-                        <ul class="dropdown-menu">
-                            <template v-if="loginStatus">
-                                <li>
-                                    <a href="#modal-container-invite-code" data-toggle="modal">生成邀请码</a>
-                                </li>
-                            </template>
-                            <template v-else>
-                                <li>
-                                    <a>加入猫窝</a>
-                                </li>
-                            </template>
-                            <li class="divider">
-                            <li>
-                                <template v-if="loginStatus">
-                                    <a href="/users/logout">退出猫窝</a>
-                                </template>
-                            </li>
-                        </ul>
-                    </li>
-
                 </ul>
+
             </div>
         </div>
     </nav>
