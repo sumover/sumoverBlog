@@ -1,0 +1,4 @@
+GET http://{{baseURL}}/
+Accept: application/json
+
+###
