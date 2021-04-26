@@ -292,7 +292,11 @@ module.exports = {
     /**
      * 根据日期查询文章列表
      * @param _date 日期
-     * @returns {Promise<[]>} 文章列表
+     * @returns {Promise<[{
+     *     articleId: number,
+     *     title: String,
+     *     createTime: String
+     * }]>} 文章列表
      */
     queryArticleByDate: async (_date) => {
         var articleList = await ArticleModel.findAll();
