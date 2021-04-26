@@ -72,19 +72,19 @@ router.get('/tag', urlEncodeParser,
         });
     });
 
-router.get('/date', urlEncodeParser,
+router.get('/date/:dateString', urlEncodeParser,
     /**
      * 以日期为分类的静态索引页面
      *
      * url举例
-     * > {{baseURL}}/date?date=2020-1-1
+     * > {{baseURL}}/date/2020-1-1/
      * @param req
      * @param res
      * @param next
      * @returns {Promise<void>}
      */
     async (req, res, next) => {
-        var _date = req.query.date;
+        var _date = req.params.dateString;
 
         res.render('classifyByDate', {
             title: `archives|${_date}`,
