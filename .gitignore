@@ -4,3 +4,6 @@
 *.iml
 /node_modules
 /database
+/log/combined.log
+/log/err.log
+/log/out.log
