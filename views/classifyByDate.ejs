@@ -18,13 +18,14 @@
             <% } else { for (var article of articleList) { %>
                 <tr>
                     <td class="col-md-6">
-                        <a href="/article/<%= article.articleId %>/detail/" class="h3 text-info text-center">
-                            <%= article.title %></a>
+                        <p class="h3 text-info text-left">
+                            <a href="/article/<%= article.articleId %>/detail/" >
+                                <%= article.title %></a>
+                        </p>
                     </td>
                     <td class="col-md-4">
-                        <h3 class="text-info text-center">
-                            <%= article.createTime %>
-                        </h3>
+                        <p class="h3 text-info text-center"><%= article.createTime %>
+                        </p>
                     </td>
                 </tr>
             <% }} %>

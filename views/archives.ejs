@@ -14,7 +14,8 @@
         <h1 class="text-primary page-header">标签云</h1>
         <div class="jumbotron">
             <% for (var tag of tagCloud) { %>
-                <a href="/tag?tag=<%= tag.labelInfo %>" class="label label-info"><%= tag.labelInfo %></a>
+                <a href="/tag?tag=<%= tag.labelInfo %>" class="label label-info"
+                   style="line-height: 3"><%= tag.labelInfo %></a>
             <% } %>
         </div>
 
@@ -26,7 +27,7 @@
                     <div class="layui-timeline-content layui-text">
                         <h3>
                             <a class="text text-success layui-timeline-title"
-                               href="/date?date=<%= articleList.time %>"><%= articleList.time %></a>
+                               href="/date/<%= articleList.time %>"><%= articleList.time %></a>
                         </h3>
                         <ul>
                             <% for (var article of articleList.articleList) { %>
