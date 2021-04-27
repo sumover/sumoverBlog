@@ -14,7 +14,7 @@
         <h1 class="text-primary page-header">标签云</h1>
         <div class="jumbotron">
             <% for (var tag of tagCloud) { %>
-                <a href="/tag?tag=<%= tag.labelInfo %>" class="label label-info"
+                <a href="/tag/<%= tag.labelInfo %>" class="label label-info"
                    style="line-height: 3"><%= tag.labelInfo %></a>
             <% } %>
         </div>

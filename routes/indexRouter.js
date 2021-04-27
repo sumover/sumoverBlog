@@ -45,7 +45,7 @@ router.get('/archives', urlEncodeParser,
         });
     });
 
-router.get('/tag', urlEncodeParser,
+router.get('/tag/:tag', urlEncodeParser,
     /**
      * 以标签为分类的静态索引页面
      *
@@ -58,7 +58,7 @@ router.get('/tag', urlEncodeParser,
      * @returns {Promise<void>}
      */
     async (req, res, next) => {
-        var tag = req.query.tag;
+        var tag = req.params.tag;
         if (tag === "" || tag === undefined) {
             res.redirect('/article');
             return
