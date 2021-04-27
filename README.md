@@ -140,3 +140,10 @@ RESTUrl用的很开心, 因为不需要从res.query了. 而且url更好看了.
 独立开发者是真的爽, 前提是你水平够(羡慕尤大qwq)
 
 先写到这吧.
+
+
+## 2021/4/27 开发日志
+
+1. 修复了一系列UI bug, 并将search以外的url修改为REST url
+
+2. 修复了tag?tag=c++时, 无法正确显示的bug, 更改为rest url后解决.

@@ -1,0 +1,8 @@
+2021-03-02T12:56:14: Warning: connect.session() MemoryStore is not
+2021-03-02T12:56:14: designed for a production environment, as it will leak
+2021-03-02T12:56:14: memory, and will not scale past a single process.
+2021-03-02T12:56:14: Tue, 02 Mar 2021 04:56:14 GMT body-parser deprecated undefined extended: provide extended option at routes\indexRouter.js:4:36
+2021-03-02T12:56:16: Tue, 02 Mar 2021 04:56:15 GMT body-parser deprecated undefined extended: provide extended option at routes\usersRouter.js:4:36
+2021-03-02T12:56:16: Tue, 02 Mar 2021 04:56:15 GMT body-parser deprecated undefined extended: provide extended option at routes\searchRouter.js:4:36
+2021-03-02T12:56:16: Tue, 02 Mar 2021 04:56:15 GMT body-parser deprecated undefined extended: provide extended option at routes\articleRouter.js:9:36
+2021-03-02T12:56:16: Tue, 02 Mar 2021 04:56:15 GMT body-parser deprecated undefined extended: provide extended option at routes\administratorRouter.js:9:36
